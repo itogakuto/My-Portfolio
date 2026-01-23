@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ito Gakuto | Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              earth: {
+                50: '#f9f8f6',
+                100: '#f0ede8',
+                200: '#e0dacf',
+                300: '#cabcab',
+                400: '#a89482',
+                500: '#8e7764',
+                600: '#725d4e',
+                700: '#5e4c41',
+                800: '#4e4039',
+                900: '#423732',
+              },
+              forest: {
+                50: '#f2fcf5',
+                100: '#e1f8e8',
+                200: '#c3efd2',
+                300: '#94e0b3',
+                400: '#5cc990',
+                500: '#36ae73',
+                600: '#278c5b',
+                700: '#23704b',
+                800: '#1f593e',
+                900: '#1a4935',
+              }
+            },
+            fontFamily: {
+              sans: ['Helvetica Neue', 'Arial', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Meiryo', 'sans-serif'],
+              serif: ['Shippori Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', 'serif'],
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              },
+              slideInRight: {
+                '0%': { opacity: '0', transform: 'translateX(20px)' },
+                '100%': { opacity: '1', transform: 'translateX(0)' },
+              }
+            },
+            animation: {
+              fadeIn: 'fadeIn 0.5s ease-out forwards',
+              slideInRight: 'slideInRight 0.6s ease-out forwards',
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@400;500;700&display=swap');
+      body {
+        font-family: 'Noto Sans JP', sans-serif;
+        background-color: #f9f8f6;
+        color: #423732;
+      }
+      h1, h2, h3, .serif {
+        font-family: 'Shippori Mincho', serif;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@^2.91.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.12.0",
+    "@emailjs/browser": "https://esm.sh/@emailjs/browser@^4.4.1",
+    "vite": "https://esm.sh/vite@^7.3.1"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
