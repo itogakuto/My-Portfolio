@@ -1,20 +1,13 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+これは伊藤楽大のポートフォリオサイトです。
 
-# Run and deploy your AI Studio app
+フレームワーク：Node.js
+データベース：supabase
+デプロイ：vercel
 
-This contains everything you need to run your app locally.
+公開リンク：https://portfolio-dev2-psi.vercel.app
 
-View your app in AI Studio: https://ai.studio/apps/drive/1zmaMtM_-9oqrMVSAOH54nbennslV7O5v
-
-## Run Locally
-
-**Prerequisites:**  Node.js
-
-
+#for local
 1. Install dependencies:
    `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
+2. Run the app:
    `npm run dev`
