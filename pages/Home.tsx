@@ -17,7 +17,7 @@ export const Home: React.FC = () => {
   const [activeSkillTab, setActiveSkillTab] = useState<SkillCategory>('Technology');
   
   const [heroImages, setHeroImages] = useState<string[]>([
-    "images/hero-images/1."
+    "images/hero-images/1.jpg"
   ]);
   const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
 
@@ -121,7 +121,7 @@ export const Home: React.FC = () => {
             <div className="flex flex-col md:flex-row items-start gap-12">
                 <div className="w-full md:w-1/3">
                     <div className="aspect-[3/4] rounded-lg overflow-hidden shadow-xl bg-earth-200">
-                        <img src="/images/profile/.jpg" alt="Ito Gakuto" className="w-full h-full object-cover" />
+                        <img src="/images/profile/profile.jpg" alt="Ito Gakuto" className="w-full h-full object-cover" />
                     </div>
                 </div>
                 <div className="w-full md:w-2/3">
