@@ -55,10 +55,10 @@ export const ExperienceList: React.FC = () => {
           
           <div className="mb-12 text-center animate-fadeIn">
             <h1 className="text-2xl md:text-3xl font-bold text-earth-900 tracking-widest">
-              Fragments of Experience
+              a book of Experience
             </h1>
             <p className="text-[10px] uppercase tracking-[0.4em] text-earth-500 mt-2">
-              多様なバックグラウンドの断片録
+              多様な好奇心と経験の記録
             </p>
           </div>
 
@@ -94,22 +94,24 @@ export const ExperienceList: React.FC = () => {
                   <div className="page-front bg-earth-900 border-4 border-earth-300 rounded-r-xl shadow-2xl flex flex-col items-center justify-center p-12 text-center overflow-hidden">
                     <div className="absolute inset-4 border border-earth-700/50"></div>
                     <div className="relative z-10">
-                       <div className="w-20 h-20 mb-8 mx-auto opacity-40 invert grayscale">
-                         <img src="/deer-line-art.png" alt="Emblem" className="w-full h-full object-contain" />
+                       <div className="w-60 h-60 mb-8 mx-auto opacity-40">
+                         <img src="/images/book-image/takibi.png" alt="Emblem" className="w-full h-full object-contain" />
                        </div>
                        <h2 className="text-3xl md:text-5xl font-bold text-earth-100 leading-tight mb-6">
-                         Hobbies & <br /> Experiences
+                         Experiences
                        </h2>
                        <div className="w-16 h-px bg-earth-400 mx-auto mb-6"></div>
-                       <p className="text-earth-400 text-xs italic tracking-widest uppercase">Ito Gakuto Anthologies</p>
+                       <p className="text-earth-400 text-xs italic tracking-widest uppercase">Ito Gakuto</p>
                     </div>
                   </div>
                   <div className="page-back bg-earth-100 rounded-l-xl border-r border-earth-200 p-12 shadow-inner">
                     <div className="h-full border border-earth-200/50 p-8 flex flex-col justify-center items-center text-center">
-                       <h3 className="text-2xl text-earth-800 mb-6 font-bold">序文</h3>
+                       <h3 className="text-2xl text-earth-800 mb-6 font-bold">はじめに</h3>
                        <p className="text-earth-600 text-sm leading-relaxed mb-4">
-                         一見、私の専門領域とは異なるこれらの断片は、<br />
-                         思考を柔軟にし、新しい視点を与えるスパイスです。
+                         僕の興味は狩猟だけではありません。<br />
+                         <br />
+                         <br />
+                         
                        </p>
                        <p className="text-earth-600 text-sm leading-relaxed italic">
                          静かにページを捲り、その欠片に触れてみてください。

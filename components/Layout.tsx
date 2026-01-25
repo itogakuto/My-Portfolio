@@ -79,11 +79,10 @@ const Footer: React.FC = () => (
     <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
       <div className="mb-4 md:mb-0">
         <h2 className="text-2xl font-bold serif mb-2">ITO GAKUTO</h2>
-        <p className="text-earth-400 text-sm">Designing sustainable systems for wildlife and communities.</p>
       </div>
       <div className="flex space-x-6 text-sm text-earth-300">
-        <Link to="/admin" className="hover:text-white transition-colors">Admin Area</Link>
-        <span>&copy; {new Date().getFullYear()} Ito Gakuto</span>
+        <Link to="/admin" className="hover:text-white transition-colors">Click To Admin Page</Link>
+        <span>&copy; {new Date().getFullYear()} Gakuto Ito</span>
       </div>
     </div>
   </footer>

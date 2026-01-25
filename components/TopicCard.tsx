@@ -3,19 +3,17 @@ import { Link } from 'react-router-dom';
 import { Topic } from '../types';
 import { CONFIG } from '../config';
 
+// コンポーネント作成
 interface Props {
   topic: Topic;
 }
 
-/**
- * 画像パスを解決する共通関数（他のコンポーネントでも使いやすいようにエクスポート可能に検討）
- */
 export const resolveImageUrl = (url: string | undefined, id: string): string => {
   const fallback = `https://picsum.photos/seed/${id}/800/450`;
   if (!url || url.trim() === '') return fallback;
   if (url.startsWith('http')) return url;
   
-  // 先頭のスラッシュを除去し、バケット名(images)以降のパスを組み立て
+  // supabaseからの画像URLを生成
   const cleanPath = url.replace(/^\/+/, '');
   return `${CONFIG.SUPABASE.URL}/storage/v1/object/public/images/${cleanPath}`;
 };

@@ -9,13 +9,12 @@ export const LoadingScreen: React.FC<Props> = ({ onComplete, isInitial = false }
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
 
-  // 農業・生命・工学を象徴する線画風画像（CSSフィルタで線画風に調整）
   const allImages = [
-    "https://images.unsplash.com/photo-1484406566174-9da000fda645?q=80&w=400&auto=format&fit=crop", // 鹿（野生動物）
-    "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?q=80&w=400&auto=format&fit=crop", // 若葉（農業）
-    "https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=400&auto=format&fit=crop", // 歯車/機械（工学）
-    "https://images.unsplash.com/photo-1542601906960-da01fb732191?q=80&w=400&auto=format&fit=crop", // 木の葉（自然）
-    "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?q=80&w=400&auto=format&fit=crop"  // 地図/データ（フィールドワーク）
+    "/images/loading-images/1.png",
+    "/images/loading-images/2.png",
+    "/images/loading-images/3.png",
+    "/images/loading-images/4.png",
+    "/images/loading-images/1.png",
   ];
 
   // 初回は5枚、遷移時は3枚
@@ -54,7 +53,7 @@ export const LoadingScreen: React.FC<Props> = ({ onComplete, isInitial = false }
     >
       <div className="relative">
         {/* 画像コンテナ: 中央に小さく配置 */}
-        <div className="w-32 h-32 md:w-40 md:h-40 mb-8 relative border border-earth-100 bg-white shadow-inner flex items-center justify-center overflow-hidden rounded-lg">
+        <div className="w-64 h-64 md:w-[450px] md:h-[450px] mb-12 relative border border-earth-100 bg-white shadow-2xl flex items-center justify-center overflow-hidden rounded-2xl">
           {displayImages.map((img, idx) => (
             <img 
               key={idx}

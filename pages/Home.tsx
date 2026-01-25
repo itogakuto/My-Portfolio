@@ -17,8 +17,7 @@ export const Home: React.FC = () => {
   const [activeSkillTab, setActiveSkillTab] = useState<SkillCategory>('Technology');
   
   const [heroImages, setHeroImages] = useState<string[]>([
-    "https://picsum.photos/1920/1080?grayscale&blur=2",
-    "https://images.unsplash.com/photo-1444858291040-58f756a3bdd6?q=80&w=2078&auto=format&fit=crop"
+    "images/hero-images/1."
   ]);
   const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
 
@@ -76,19 +75,19 @@ export const Home: React.FC = () => {
       title: 'テクノロジー',
       color: '#f87171',
       desc: 'フロントエンドからバックエンド、さらにはIoTデバイスの製作まで、現場の課題を解決するための実装力を磨いています。特に現場での運用に耐えうる堅牢なシステム構築を重視しています。',
-      levels: ["5 - Super Saiyan", "4 - Ninja", "3 - Pokémon Master", "2 - I can use it a little.", "1 - Beginner"]
+      levels: ["5 - Super", "4 - Always", "3 - Often", "2 - Sometimes", "1 - Beginner"]
     },
     'Design': {
       title: 'デザイン',
       color: '#34d399',
       desc: '単なる美しさだけでなく、ユーザー体験（UX）に基づいた設計を心がけています。狩猟現場での使いやすさや、情報の伝わりやすさをエンジニアリングの視点と融合させています。',
-      levels: ["5 - Jedi", "4 - Samurai", "3 - Stand Master", "2 - I can use it a little.", "1 - Beginner"]
+      levels: ["5 - Super", "4 - Always", "3 - Often", "2 - Sometimes", "1 - Beginner"]
     },
     'Entrepreneurship': {
       title: '起業家精神',
       color: '#fbbf24',
       desc: 'フィールドワークを通じて課題の本質を捉え、それを解決するためのビジネスモデルや戦略を立案します。地域社会とのコミュニケーションを大切にし、持続可能な産業構造の構築を目指します。',
-      levels: ["5 - Platinum", "4 - Gold", "3 - Silver", "2 - Bronze", "1 - Beginner"]
+      levels: ["5 - Super", "4 - Always", "3 - Often", "2 - Sometimes", "1 - Beginner"]
     }
   };
 
@@ -103,50 +102,73 @@ export const Home: React.FC = () => {
         </div>
         <div className="relative z-10 w-full bg-black/40 backdrop-blur-sm py-16">
           <div className="max-w-5xl mx-auto px-6 text-center text-white">
-            <p className="text-forest-200 font-bold tracking-widest mb-6 uppercase text-sm animate-fadeIn">Agriculture x Technology</p>
-            <h1 className="text-4xl md:text-7xl font-bold serif mb-6 leading-tight text-white drop-shadow-md animate-fadeIn" style={{ animationDelay: '0.2s' }}>
-              狩猟<span className="text-[0.9em] align-baseline mx-0.5 opacity-90 font-normal">を</span>経済<span className="text-[0.9em] align-baseline mx-0.5 opacity-90 font-normal">で</span>持続可能に。
+            <p className="text-forest-200 font-bold tracking-widest mb-6 uppercase text-sm animate-fadeIn">Field x Technology × Business</p>
+            <h1 className="text-4xl md:text-7xl font-semibold serif mb-6 leading-tight text-white drop-shadow-md animate-fadeIn" style={{ animationDelay: '0.2s' }}>
+              世界をより楽しくより大きく
             </h1>
+            <p className="text-earth-200 max-w-3xl mx-auto mb-8 leading-relaxed text-lg animate-fadeIn" style={{ animationDelay: '0.4s' }}>
+              多分野を横断する技術と経験で、世界を変えていく"最強の右腕"を目指して。
+            </p>
           </div>
         </div>
       </section>
 
       {/* 1. Profile Section */}
       <section id="profile" className="py-24 bg-earth-50 relative overflow-hidden">
-        <DeerLineArt className="absolute top-10 right-[-50px] w-64 h-64 text-forest-200 pointer-events-none" opacity={0.15} />
+        <DeerLineArt className="absolute top-10 right-[50px] w-80 h-80 text-forest-200 pointer-events-none object-contain" opacity={1} />
         <div className="max-w-6xl mx-auto px-6 relative z-10">
             <SectionTitle en="Profile" jp="私について" />
             <div className="flex flex-col md:flex-row items-start gap-12">
                 <div className="w-full md:w-1/3">
                     <div className="aspect-[3/4] rounded-lg overflow-hidden shadow-xl bg-earth-200">
-                        <img src="https://picsum.photos/600/800" alt="Ito Gakuto" className="w-full h-full object-cover" />
+                        <img src="/images/profile/.jpg" alt="Ito Gakuto" className="w-full h-full object-cover" />
                     </div>
                 </div>
                 <div className="w-full md:w-2/3">
                     <h3 className="text-3xl font-bold serif text-earth-900 mb-2">伊藤 楽大 <span className="text-xl font-sans font-normal text-earth-500 ml-2">Ito Gakuto</span></h3>
                     <p className="text-forest-700 font-bold mb-6 text-lg">神山まるごと高等専門学校 デザイン・エンジニアリング学科</p>
                     <div className="prose prose-earth text-earth-700 leading-loose">
-                        <p>現場の課題をエンジニアリングに翻訳し、実際に使える形に落とし込む。そして、将来は狩猟を「資源生産」という前向きな産業へと転換することを目指しています。</p>
+                        <p>
+                          情報工学を専門とし、web開発やアプリ開発を中心に据え、新規事業開発や主催イベントの開催など、幅広く活動を行ってきました。 いずれの活動においても主体性を発揮し、それぞれの理想的な結果の実現に貢献してきました。 また、農業や狩猟などに関する知見もあり、多分野を横断した多角的な思考および現場の声に則したプロダクト開発を行う点も私の強みです。
+                        </p>
+                        <p><br />
+                          現在は編入学に向けて準備を進めつつ、技術力の向上を目指しています。
+                        </p>
+                        <p>
+                          これまでさまざまな活動をしてきたものの、その力はまだまだ不十分だと感じています。
+                        </p>
+                        <p><br />
+                          今後、企業様へのインターンシップや進学後の研究活動等において、さらなる技術力の向上を目指し、多分野に知見を持つ技術的素養を持った人材として、現場主体の課題解決を通じて社会に貢献していきたいと考えています。
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
       </section>
 
-      {/* 2. My Purpose Section */}
+      {/* 2. Purpose Section */}
       <section id="purpose" className="py-24 bg-white relative overflow-hidden">
-        <BoarLineArt className="absolute bottom-[-40px] left-[-40px] w-80 h-80 text-earth-100 pointer-events-none -rotate-12" opacity={0.1} />
+        <BoarLineArt className="absolute bottom-[-40px] left-[-40px] w-80 h-80 text-earth-100 pointer-events-none -rotate-12 object-contain" opacity={1} />
         <div className="max-w-4xl mx-auto px-6 relative z-10">
           <SectionTitle en="My Purpose" jp="私の志" />
           
           <div className="mt-12">
             <h3 className="text-2xl md:text-4xl font-bold serif text-earth-900 mb-10 leading-relaxed text-center md:text-left">
-              「害獣駆除」を、<br className="md:hidden" />価値ある「資源生産」へ。
+              あなたの世界をより楽しくより大きく<br />
             </h3>
             
             <div className="prose prose-lg prose-earth text-earth-700 leading-loose space-y-8 max-w-3xl">
               <p>
-                現在、日本の農村部で起きている「鳥獣被害」は、単なる野生動物の問題ではなく、地域コミュニティの維持や食料自給、そこで生態系のバランスに関わる複合的な課題です。
+                笑顔でいること<br />
+                楽しむこと<br />
+                成長すること<br /><br />
+                
+                それだけで、世界は少しずつよりよくなるのではないかと考えています。<br /><br />
+
+                まずは目の前のあなたを、技術や経験、ビジネスの力で支え、あなたの世界をより楽しくより大きくすること。<br />
+                それが私の志です。<br /><br />
+
+
               </p>
               <p>
                 私は、テクノロジーを活用した効率的な捕獲管理と、捕獲個体を無駄にしない経済循環の仕組みをデザインすることで、狩猟を「ボランティアベースの駆除」から「持続可能な産業」へとアップデートしたいと考えています。
@@ -165,7 +187,7 @@ export const Home: React.FC = () => {
             <div className="text-center mb-16">
                 <h2 className="text-4xl font-bold serif text-earth-900 mb-8">My skill set</h2>
                 <div className="max-w-3xl mx-auto mb-12 text-earth-600 leading-relaxed text-sm">
-                    <p>修練のすえ身につけたスキルをグラフィカルにまとめました。フロントからバックエンド、さらには現場での起業家精神まで幅広く取り組んでいます。</p>
+                    <p>私の現在のスキルをグラフィカルにまとめました。フロントエンドからバックエンド、さらには現場での起業家精神まで幅広く取り組んでいます。</p>
                 </div>
 
                 {/* Filter Tabs */}
@@ -239,7 +261,7 @@ export const Home: React.FC = () => {
                     </div>
 
                     <p className="text-[10px] text-forest-600 font-bold bg-forest-50 px-4 py-2 rounded-full inline-block border border-forest-100">
-                        ＊実務やプロジェクトでの実体験に基づき算出しています
+                        ＊個人開発やプロジェクトでの実体験に基づき算出しています
                     </p>
                 </div>
             </div>
@@ -285,20 +307,10 @@ export const Home: React.FC = () => {
       {/* 7. Hobbies & Special Experiences (Mini Section) */}
       <section id="experiences-minimal" className="py-32 bg-white relative overflow-hidden border-t border-earth-100">
         <div className="max-w-4xl mx-auto px-6 text-center">
-            <div className="relative inline-block mb-12 group">
-              {/* Fade Container */}
-              <div className="relative w-48 h-48 mx-auto">
-                <DeerLineArt className="absolute inset-0 w-full h-full text-earth-200 transition-opacity duration-700 group-hover:opacity-0" opacity={0.3} />
-                <div className="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-full overflow-hidden border-2 border-forest-100">
-                   <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1000&auto=format&fit=crop" alt="Nature" className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-1000" />
-                </div>
-              </div>
-            </div>
-            
-            <h2 className="text-3xl font-bold serif text-earth-900 mb-6">Diversified Background</h2>
+            <h2 className="text-3xl font-bold serif text-earth-900 mb-6">My Experiences</h2>
             <p className="text-earth-500 mb-10 max-w-lg mx-auto leading-loose text-sm italic">
-              狩猟だけでなく、多様なフィールドでの面白い体験や、<br />
-              少し変わった趣味・経験が、私の思考のスパイスになっています。
+              世界を楽しみ、学び、大きくなること。それは、僕の活動のテーマの一つです。<br />
+              これまでに得た多様な経験をまとめています。下記ボタンからご覧ください。
             </p>
             
             <Link 
@@ -316,7 +328,7 @@ export const Home: React.FC = () => {
       {/* 6. Contact Section */}
       <section id="contact" className="py-24 bg-earth-50 border-t border-earth-100">
         <div className="max-w-3xl mx-auto px-6">
-            <SectionTitle en="Contact" jp="お問い合わせ" />
+            <SectionTitle en="Contact" jp="少しでもご興味をお持ちいただけましたら、下記よりお問い合わせいただきますようにお願いします。" />
             <div className="bg-white p-8 rounded-xl border border-earth-100 shadow-sm">
                 <form ref={formRef} onSubmit={sendEmail} className="space-y-6">
                     <div>
