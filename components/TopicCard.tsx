@@ -1,20 +1,43 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Topic } from '../types';
+import { CONFIG } from '../config';
 
 interface Props {
   topic: Topic;
 }
 
+/**
+ * 画像パスを解決する共通関数（他のコンポーネントでも使いやすいようにエクスポート可能に検討）
+ */
+export const resolveImageUrl = (url: string | undefined, id: string): string => {
+  const fallback = `https://picsum.photos/seed/${id}/800/450`;
+  if (!url || url.trim() === '') return fallback;
+  if (url.startsWith('http')) return url;
+  
+  // 先頭のスラッシュを除去し、バケット名(images)以降のパスを組み立て
+  const cleanPath = url.replace(/^\/+/, '');
+  return `${CONFIG.SUPABASE.URL}/storage/v1/object/public/images/${cleanPath}`;
+};
+
 export const TopicCard: React.FC<Props> = ({ topic }) => {
+  const displayImage = resolveImageUrl(topic.image_url, topic.id);
+
   return (
     <Link to={`/topics/${topic.slug}`} className="group block h-full">
       <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-earth-100 flex flex-col h-full">
         <div className="aspect-video w-full overflow-hidden bg-earth-200 relative">
           <img 
-            src={topic.image_url || `https://picsum.photos/seed/${topic.id}/800/450`} 
+            src={displayImage} 
             alt={topic.title}
-            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              if (target.src !== `https://picsum.photos/seed/${topic.id}/800/450`) {
+                target.src = `https://picsum.photos/seed/${topic.id}/800/450`;
+              }
+            }}
+            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
           />
           <div className="absolute top-4 left-4">
               <span className={`
@@ -49,7 +72,7 @@ export const TopicCard: React.FC<Props> = ({ topic }) => {
             <div className="flex justify-between items-center">
                <span className="text-[10px] text-forest-600 font-bold uppercase tracking-widest">Read More →</span>
                <span className="text-[10px] text-earth-300 font-mono italic">
-                 {new Date(topic.created_at).toLocaleDateString()}
+                 {topic.created_at ? new Date(topic.created_at).toLocaleDateString() : '---'}
                </span>
             </div>
           </div>

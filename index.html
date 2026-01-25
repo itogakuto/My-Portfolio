@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
@@ -60,6 +60,11 @@
     </script>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@400;500;700&display=swap');
+      
+      :root {
+        scroll-behavior: smooth;
+      }
+
       body {
         font-family: 'Noto Sans JP', sans-serif;
         background-color: #f9f8f6;
@@ -82,7 +87,6 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
 </head>
   <body>
     <div id="root"></div>

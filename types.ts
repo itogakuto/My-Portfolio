@@ -35,6 +35,16 @@ export interface Skill {
   level: number;
 }
 
+export interface Experience {
+  id: string;
+  title: string;
+  slug: string;
+  summary: string;
+  body?: string;
+  image_url?: string;
+  created_at: string;
+}
+
 export interface User {
   id: string;
   email: string;

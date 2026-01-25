@@ -95,7 +95,7 @@ export const Home: React.FC = () => {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section id="hero" className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-earth-900">
            {heroImages.map((img, index) => (
              <img key={index} src={img} className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${index === currentHeroIndex ? 'opacity-50' : 'opacity-0'}`} alt="" />
@@ -103,9 +103,9 @@ export const Home: React.FC = () => {
         </div>
         <div className="relative z-10 w-full bg-black/40 backdrop-blur-sm py-16">
           <div className="max-w-5xl mx-auto px-6 text-center text-white">
-            <p className="text-forest-200 font-bold tracking-widest mb-6 uppercase text-sm">Agriculture x Technology</p>
-            <h1 className="text-4xl md:text-7xl font-bold serif mb-6 leading-tight text-white drop-shadow-md">
-              狩猟を、<br className="md:hidden" />経済で持続可能なものへ。
+            <p className="text-forest-200 font-bold tracking-widest mb-6 uppercase text-sm animate-fadeIn">Agriculture x Technology</p>
+            <h1 className="text-4xl md:text-7xl font-bold serif mb-6 leading-tight text-white drop-shadow-md animate-fadeIn" style={{ animationDelay: '0.2s' }}>
+              狩猟<span className="text-[0.9em] align-baseline mx-0.5 opacity-90 font-normal">を</span>経済<span className="text-[0.9em] align-baseline mx-0.5 opacity-90 font-normal">で</span>持続可能に。
             </h1>
           </div>
         </div>
@@ -146,7 +146,7 @@ export const Home: React.FC = () => {
             
             <div className="prose prose-lg prose-earth text-earth-700 leading-loose space-y-8 max-w-3xl">
               <p>
-                現在、日本の農村部で起きている「鳥獣被害」は、単なる野生動物の問題ではなく、地域コミュニティの維持や食料自給、そして生態系のバランスに関わる複合的な課題です。
+                現在、日本の農村部で起きている「鳥獣被害」は、単なる野生動物の問題ではなく、地域コミュニティの維持や食料自給、そこで生態系のバランスに関わる複合的な課題です。
               </p>
               <p>
                 私は、テクノロジーを活用した効率的な捕獲管理と、捕獲個体を無駄にしない経済循環の仕組みをデザインすることで、狩猟を「ボランティアベースの駆除」から「持続可能な産業」へとアップデートしたいと考えています。
@@ -160,7 +160,7 @@ export const Home: React.FC = () => {
       </section>
 
       {/* 3. Skillset Section */}
-      <section className="py-24 bg-earth-50 border-t border-earth-100">
+      <section id="skills" className="py-24 bg-earth-50 border-t border-earth-100">
         <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-16">
                 <h2 className="text-4xl font-bold serif text-earth-900 mb-8">My skill set</h2>
@@ -247,7 +247,7 @@ export const Home: React.FC = () => {
       </section>
 
       {/* 4. Projects Section */}
-      <section className="py-24 bg-white border-t border-earth-100">
+      <section id="projects" className="py-24 bg-white border-t border-earth-100">
         <div className="max-w-7xl mx-auto px-6">
             <div className="flex justify-between items-end mb-12">
                 <SectionTitle en="Projects" jp="主な取り組み" />
@@ -264,7 +264,7 @@ export const Home: React.FC = () => {
       </section>
 
       {/* 5. News Section */}
-      <section className="py-16 bg-earth-50 border-t border-earth-100">
+      <section id="news" className="py-16 bg-earth-50 border-t border-earth-100">
         <div className="max-w-6xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-start gap-8">
             <div className="md:w-1/4">
@@ -282,11 +282,42 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
+      {/* 7. Hobbies & Special Experiences (Mini Section) */}
+      <section id="experiences-minimal" className="py-32 bg-white relative overflow-hidden border-t border-earth-100">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+            <div className="relative inline-block mb-12 group">
+              {/* Fade Container */}
+              <div className="relative w-48 h-48 mx-auto">
+                <DeerLineArt className="absolute inset-0 w-full h-full text-earth-200 transition-opacity duration-700 group-hover:opacity-0" opacity={0.3} />
+                <div className="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-full overflow-hidden border-2 border-forest-100">
+                   <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1000&auto=format&fit=crop" alt="Nature" className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-1000" />
+                </div>
+              </div>
+            </div>
+            
+            <h2 className="text-3xl font-bold serif text-earth-900 mb-6">Diversified Background</h2>
+            <p className="text-earth-500 mb-10 max-w-lg mx-auto leading-loose text-sm italic">
+              狩猟だけでなく、多様なフィールドでの面白い体験や、<br />
+              少し変わった趣味・経験が、私の思考のスパイスになっています。
+            </p>
+            
+            <Link 
+              to="/experiences" 
+              className="inline-flex items-center gap-4 px-10 py-4 bg-earth-900 text-white rounded-full font-bold hover:bg-forest-700 transition-all hover:gap-6 shadow-xl"
+            >
+              Explore My Experiences
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+        </div>
+      </section>
+
       {/* 6. Contact Section */}
-      <section id="contact" className="py-24 bg-white border-t border-earth-100">
+      <section id="contact" className="py-24 bg-earth-50 border-t border-earth-100">
         <div className="max-w-3xl mx-auto px-6">
             <SectionTitle en="Contact" jp="お問い合わせ" />
-            <div className="bg-earth-50 p-8 rounded-xl border border-earth-100 shadow-sm">
+            <div className="bg-white p-8 rounded-xl border border-earth-100 shadow-sm">
                 <form ref={formRef} onSubmit={sendEmail} className="space-y-6">
                     <div>
                         <label className="block text-sm font-bold text-earth-800 mb-2">お名前</label>

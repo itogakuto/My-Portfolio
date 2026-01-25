@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { supabase } from '../services/supabase';
 import { Layout } from '../components/Layout';
 import { Topic } from '../types';
+import { resolveImageUrl } from '../components/TopicCard';
 
 export const TopicDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -47,6 +48,8 @@ export const TopicDetail: React.FC = () => {
     );
   }
 
+  const displayImage = resolveImageUrl(topic.image_url, topic.id);
+
   return (
     <Layout>
       <div className="pt-32 pb-24 bg-earth-50 min-h-screen">
@@ -55,12 +58,21 @@ export const TopicDetail: React.FC = () => {
             ← PROJECTS 一覧に戻る
           </Link>
 
-          <article className="bg-white rounded-2xl overflow-hidden shadow-sm border border-earth-100">
-            {topic.image_url && (
-              <div className="aspect-[21/9] w-full bg-earth-200">
-                <img src={topic.image_url} alt={topic.title} className="w-full h-full object-cover" />
-              </div>
-            )}
+          <article className="bg-white rounded-2xl overflow-hidden shadow-sm border border-earth-100 animate-fadeIn">
+            <div className="aspect-[21/9] w-full bg-earth-200 overflow-hidden">
+              <img 
+                src={displayImage} 
+                alt={topic.title} 
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  const fallback = `https://picsum.photos/seed/${topic.id}/1200/600`;
+                  if (target.src !== fallback) {
+                    target.src = fallback;
+                  }
+                }}
+                className="w-full h-full object-cover" 
+              />
+            </div>
             
             <div className="p-8 md:p-12">
               <div className="flex flex-wrap gap-2 mb-8">
