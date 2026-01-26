@@ -206,18 +206,19 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* 3. Skillset Section - COMPLETELY REFRESHED LAYOUT */}
-      <section id="skills" className="py-32 bg-earth-50 border-t border-earth-100 relative overflow-hidden">
+      {/* 3. Skillset Section */}
+      <section id="skills" className="py-24 md:py-32 bg-earth-50 border-t border-earth-100 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="text-center mb-20">
-            <h3 className="text-4xl font-bold serif text-earth-900">My skill set</h3>
+          <div className="text-center mb-16 md:mb-20">
+            <h2 className="text-[10px] md:text-xs font-black text-earth-400 uppercase tracking-[0.5em] mb-4">Competency & Tools</h2>
+            <h3 className="text-3xl md:text-4xl font-bold serif text-earth-900">My skill set</h3>
           </div>
 
           <div className="flex flex-col items-center">
-            {/* refを使用した動的なスライディングタブ */}
-            <div className="relative inline-flex bg-white/60 backdrop-blur-xl p-1.5 rounded-[20px] border border-earth-200 shadow-sm mb-16 overflow-hidden">
+            {/* 動的なスライディングタブ：モバイル対応 */}
+            <div className="relative inline-flex bg-white/60 backdrop-blur-xl p-1 md:p-1.5 rounded-xl md:rounded-[20px] border border-earth-200 shadow-sm mb-12 md:mb-16 max-w-full overflow-x-auto scrollbar-hide">
               <div 
-                className="absolute top-1.5 bottom-1.5 transition-all duration-700 cubic-bezier(0.65, 0, 0.35, 1) rounded-xl shadow-lg"
+                className="absolute top-1 md:top-1.5 bottom-1 md:bottom-1.5 transition-all duration-700 cubic-bezier(0.65, 0, 0.35, 1) rounded-lg md:rounded-xl shadow-lg"
                 style={{
                   left: `${indicatorStyle.left}px`,
                   width: `${indicatorStyle.width}px`,
@@ -228,10 +229,9 @@ export const Home: React.FC = () => {
               {skillCategories.map((cat, idx) => (
                 <button
                   key={cat}
-                  // Fix: Wrapped assignment in curly braces to ensure the callback returns void.
                   ref={el => { tabRefs.current[idx] = el; }}
                   onClick={() => setActiveSkillTab(cat)}
-                  className={`relative z-10 px-10 py-3.5 rounded-xl font-black text-[10px] uppercase tracking-[0.2em] transition-colors duration-500 whitespace-nowrap ${
+                  className={`relative z-10 px-4 md:px-10 py-2.5 md:py-3.5 rounded-lg md:rounded-xl font-black text-[9px] md:text-[10px] uppercase tracking-[0.2em] transition-colors duration-500 whitespace-nowrap ${
                     activeSkillTab === cat ? 'text-white' : 'text-earth-400 hover:text-earth-600'
                   }`}
                 >
@@ -240,15 +240,15 @@ export const Home: React.FC = () => {
               ))}
             </div>
 
-            {/* コンテンツカード */}
-            <div className="w-full max-w-5xl bg-white rounded-[40px] shadow-2xl border border-earth-100 p-8 md:p-16 relative overflow-hidden">
+            {/* コンテンツカード：レスポンシブレイアウト */}
+            <div className="w-full max-w-5xl bg-white rounded-3xl md:rounded-[40px] shadow-2xl border border-earth-100 p-6 md:p-16 relative overflow-hidden">
               <div 
                 className="absolute inset-0 opacity-[0.03] transition-colors duration-1000 pointer-events-none"
                 style={{ backgroundColor: categoryInfo[activeSkillTab].color }}
               ></div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div className="relative order-2 lg:order-1 flex justify-center">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center">
+                <div className="relative order-2 lg:order-1 flex justify-center w-full">
                    <RadarChart 
                       title={activeSkillTab} 
                       color={categoryInfo[activeSkillTab].color} 
@@ -261,32 +261,32 @@ export const Home: React.FC = () => {
                    />
                 </div>
 
-                <div className="relative order-1 lg:order-2 h-full min-h-[300px] flex flex-col justify-center">
-                  <div key={activeSkillTab} className="animate-fadeIn space-y-8">
+                <div className="relative order-1 lg:order-2 flex flex-col justify-center">
+                  <div key={activeSkillTab} className="animate-fadeIn space-y-6 md:space-y-8">
                     <div>
-                      <h4 className="text-[10px] font-black text-earth-300 uppercase tracking-[0.3em] mb-4">Focus Area</h4>
-                      <h3 className="text-3xl font-bold serif text-earth-900 mb-6">
+                      <h4 className="text-[9px] md:text-[10px] font-black text-earth-300 uppercase tracking-[0.3em] mb-3">Focus Area</h4>
+                      <h3 className="text-2xl md:text-3xl font-bold serif text-earth-900 mb-4 md:mb-6">
                         {categoryInfo[activeSkillTab].title}
                       </h3>
-                      <p className="text-earth-600 leading-loose text-base">
+                      <p className="text-earth-600 leading-relaxed md:leading-loose text-sm md:text-base">
                         {categoryInfo[activeSkillTab].desc}
                       </p>
                     </div>
 
                     <div className="space-y-4">
-                      <h4 className="text-[10px] font-black text-earth-300 uppercase tracking-[0.3em] border-b border-earth-100 pb-2">Skill Inventory</h4>
+                      <h4 className="text-[9px] md:text-[10px] font-black text-earth-300 uppercase tracking-[0.3em] border-b border-earth-100 pb-2">Skill Inventory</h4>
                       <div className="flex flex-wrap gap-2">
                         {filteredSkills.map(s => (
                           <div 
                             key={s.id} 
-                            className="flex items-center gap-3 px-4 py-2 bg-earth-50 rounded-full border border-earth-100 transition-all hover:border-earth-300"
+                            className="flex items-center gap-2 md:gap-3 px-3 md:px-4 py-1.5 md:py-2 bg-earth-50 rounded-full border border-earth-100 transition-all hover:border-earth-300"
                           >
-                            <span className="text-xs font-bold text-earth-800">{s.name}</span>
+                            <span className="text-[10px] md:text-xs font-bold text-earth-800">{s.name}</span>
                             <div className="flex gap-0.5">
                               {Array.from({ length: 5 }).map((_, i) => (
                                 <div 
                                   key={i} 
-                                  className={`w-1.5 h-1.5 rounded-full transition-colors duration-700 ${i < s.level ? '' : 'bg-earth-200'}`}
+                                  className={`w-1 md:w-1.5 h-1 md:h-1.5 rounded-full transition-colors duration-700 ${i < s.level ? '' : 'bg-earth-200'}`}
                                   style={{ backgroundColor: i < s.level ? categoryInfo[activeSkillTab].color : undefined }}
                                 ></div>
                               ))}

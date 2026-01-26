@@ -1,12 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Skill } from '../types';
 
-interface Point {
-  x: number;
-  y: number;
-  r: number;
-}
-
 interface Props {
   skills: Skill[];
   color: string;
@@ -16,20 +10,19 @@ interface Props {
 export const RadarChart: React.FC<Props> = ({ skills, color, title }) => {
   const size = 320;
   const center = size / 2;
-  const radius = 110;
+  const radius = 100; // ラベルのスペースを確保するために少し小さく調整
   const levels = 5;
 
   const [progress, setProgress] = useState(1);
   const [prevColor, setPrevColor] = useState(color);
   
-  // 直前の形状データを保持するためのRef
   const lastState = useRef<{ skills: Skill[]; color: string }>({ skills, color });
   const requestRef = useRef<number>(null);
   const startTimeRef = useRef<number>(null);
 
-  // 指定した角度における多角形の半径を計算する関数
   const getRadiusAtAngle = (targetSkills: Skill[], angle: number) => {
     const count = targetSkills.length;
+    if (count === 0) return 0;
     const angleStep = (Math.PI * 2) / count;
     const normalizedAngle = (angle + Math.PI / 2 + Math.PI * 10) % (Math.PI * 2);
     
@@ -43,16 +36,14 @@ export const RadarChart: React.FC<Props> = ({ skills, color, title }) => {
     return r1 + (r2 - r1) * fraction;
   };
 
-  // 現在のアニメーション進行状況に基づいた全頂点の座標計算
   const currentPoints = useMemo(() => {
     const count = skills.length;
+    if (count === 0) return [];
     const angleStep = (Math.PI * 2) / count;
 
     return skills.map((s, i) => {
       const angle = i * angleStep - Math.PI / 2;
       const targetR = (radius / levels) * s.level;
-      
-      // 重要：前回の形状の「同じ角度」の地点をスタート地点にする
       const startR = getRadiusAtAngle(lastState.current.skills, angle);
       const currentR = startR + (targetR - startR) * progress;
 
@@ -63,7 +54,6 @@ export const RadarChart: React.FC<Props> = ({ skills, color, title }) => {
     });
   }, [skills, progress]);
 
-  // カラー補間
   const activeColor = useMemo(() => {
     const parse = (c: string) => {
       if (c.startsWith('rgb')) return c.match(/\d+/g)?.map(Number) || [0,0,0];
@@ -108,14 +98,17 @@ export const RadarChart: React.FC<Props> = ({ skills, color, title }) => {
   const pointsString = currentPoints.map(p => `${p.x},${p.y}`).join(' ');
 
   return (
-    <div className="relative flex flex-col items-center justify-center p-4">
-      {/* 背景のグロー演出：形状に合わせて色が広がる */}
+    <div className="relative w-full max-w-[320px] aspect-square flex items-center justify-center mx-auto">
+      {/* 背景のグロー演出 */}
       <div 
-        className="absolute w-40 h-40 rounded-full blur-[80px] opacity-10 transition-colors duration-1000"
+        className="absolute w-1/2 h-1/2 rounded-full blur-[60px] md:blur-[80px] opacity-10 transition-colors duration-1000"
         style={{ backgroundColor: color }}
       ></div>
 
-      <svg width={size} height={size} className="relative z-10 overflow-visible">
+      <svg 
+        viewBox={`0 0 ${size} ${size}`} 
+        className="relative z-10 w-full h-full overflow-visible"
+      >
         <defs>
           <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
             <feGaussianBlur stdDeviation="3" result="blur" />
@@ -123,7 +116,7 @@ export const RadarChart: React.FC<Props> = ({ skills, color, title }) => {
           </filter>
         </defs>
 
-        {/* 背景グリッド：クロスフェードで入れ替え */}
+        {/* 背景グリッド */}
         <g className="transition-opacity duration-700" style={{ opacity: progress }}>
           {Array.from({ length: levels }).map((_, levelIdx) => {
             const l = levelIdx + 1;
@@ -136,7 +129,7 @@ export const RadarChart: React.FC<Props> = ({ skills, color, title }) => {
           })}
         </g>
 
-        {/* メインポリゴン：ここが物理的に変形する */}
+        {/* メインポリゴン */}
         <polygon
           points={pointsString}
           fill={activeColor}
@@ -147,26 +140,30 @@ export const RadarChart: React.FC<Props> = ({ skills, color, title }) => {
           filter="url(#glow)"
         />
 
-        {/* 頂点ドット：常にポリゴン上に張り付いて移動 */}
+        {/* 頂点ドット */}
         {currentPoints.map((p, i) => (
           <g key={i}>
+            {/* Fix: removed invalid md:r attribute which is not supported in React SVGProps */}
             <circle cx={p.x} cy={p.y} r="5" fill={activeColor} className="stroke-white stroke-2" />
             <circle cx={p.x} cy={p.y} r="12" fill={activeColor} fillOpacity="0.1" />
           </g>
         ))}
 
-        {/* 項目ラベル：進行度に合わせてフェード */}
+        {/* 項目ラベル */}
         {skills.map((s, i) => {
-          const r = radius + 38;
+          const r = radius + 32;
           const angle = i * ((Math.PI * 2) / skills.length) - Math.PI / 2;
+          const x = center + r * Math.cos(angle);
+          const y = center + r * Math.sin(angle);
+          
           return (
             <text
               key={s.id}
-              x={center + r * Math.cos(angle)}
-              y={center + r * Math.sin(angle)}
+              x={x}
+              y={y}
               textAnchor="middle"
               dominantBaseline="middle"
-              className="text-[10px] font-black tracking-tighter transition-all duration-700 uppercase"
+              className="text-[9px] md:text-[10px] font-black tracking-tighter transition-all duration-700 uppercase"
               style={{ 
                 fill: progress > 0.5 ? '#4a5568' : 'transparent',
                 opacity: progress 
