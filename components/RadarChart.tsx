@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Skill } from '../types';
 
 interface Props {
@@ -8,18 +8,55 @@ interface Props {
 }
 
 export const RadarChart: React.FC<Props> = ({ skills, color, title }) => {
-  const size = 300; // Increased size from 200 to 300
+  // アニメーションの進捗状態 (0 to 1)
+  const [progress, setProgress] = useState(0);
+  const requestRef = useRef<number>(null);
+  const startTimeRef = useRef<number>(null);
+
+  const size = 300;
   const center = size / 2;
-  const radius = 100; // Increased radius from 70 to 100
+  const radius = 100;
   const levels = 5;
 
-  // Minimum 3 points to make a polygon, default to 6 for balanced look if possible
+  // イージング関数: Quintic Out (スッと速く始まり、ゆっくり止まる)
+  const easeOutQuint = (x: number): number => {
+    return 1 - Math.pow(1 - x, 5);
+  };
+
+  // アニメーションループ
+  const animate = (time: number) => {
+    if (startTimeRef.current === null) {
+      startTimeRef.current = time;
+    }
+    const elapsedTime = time - startTimeRef.current;
+    const duration = 1000; // 1秒かけて展開
+    const nextProgress = Math.min(elapsedTime / duration, 1);
+
+    setProgress(easeOutQuint(nextProgress));
+
+    if (nextProgress < 1) {
+      requestRef.current = requestAnimationFrame(animate);
+    }
+  };
+
+  useEffect(() => {
+    // データが変わるたびにアニメーションをリセット
+    setProgress(0);
+    startTimeRef.current = null;
+    requestRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (requestRef.current) cancelAnimationFrame(requestRef.current);
+    };
+  }, [skills, title]);
+
   const pointsCount = Math.max(skills.length, 3);
   const angleStep = (Math.PI * 2) / pointsCount;
 
-  // Calculate coordinates for grid and data
-  const getCoordinates = (index: number, level: number) => {
-    const r = (radius / levels) * level;
+  // 座標取得 (progressを考慮)
+  const getCoordinates = (index: number, level: number, currentProgress: number) => {
+    // レベルに進捗率を掛けることで、面積全体を伸縮させる
+    const r = (radius / levels) * level * currentProgress;
     const angle = index * angleStep - Math.PI / 2;
     return {
       x: center + r * Math.cos(angle),
@@ -27,27 +64,34 @@ export const RadarChart: React.FC<Props> = ({ skills, color, title }) => {
     };
   };
 
+  // 背景のグリッド（固定）
   const gridLines = [];
   for (let l = 1; l <= levels; l++) {
     const points = [];
     for (let i = 0; i < pointsCount; i++) {
-      const { x, y } = getCoordinates(i, l);
-      points.push(`${x},${y}`);
+      // グリッドは常にprogress=1で描画
+      const r = (radius / levels) * l;
+      const angle = i * angleStep - Math.PI / 2;
+      points.push(`${center + r * Math.cos(angle)},${center + r * Math.sin(angle)}`);
     }
     gridLines.push(points.join(' '));
   }
 
+  // データエリアのポイント文字列生成
   const dataPoints = skills.map((s, i) => {
-    const { x, y } = getCoordinates(i, s.level);
+    const { x, y } = getCoordinates(i, s.level, progress);
     return `${x},${y}`;
   }).join(' ');
 
   const labels = skills.map((s, i) => {
-    // Offset labels slightly more for the larger chart
-    const { x, y } = getCoordinates(i, levels + 1.5);
+    // ラベルの位置は固定
+    const r = radius + 35;
+    const angle = i * angleStep - Math.PI / 2;
+    const x = center + r * Math.cos(angle);
+    const y = center + r * Math.sin(angle);
     return (
       <text
-        key={i}
+        key={`${s.id}-${i}`}
         x={x}
         y={y}
         textAnchor="middle"
@@ -62,11 +106,14 @@ export const RadarChart: React.FC<Props> = ({ skills, color, title }) => {
   return (
     <div className="flex flex-col items-center">
       <div className="mb-6 flex items-center gap-2">
-        <div className="w-10 h-1 rounded-full opacity-60" style={{ backgroundColor: color }}></div>
+        <div 
+          className="w-10 h-1 rounded-full opacity-60 transition-colors duration-500" 
+          style={{ backgroundColor: color }}
+        ></div>
         <span className="text-xs font-black text-earth-400 uppercase tracking-[0.2em]">{title}</span>
       </div>
       <svg width={size} height={size} className="overflow-visible">
-        {/* Grid lines */}
+        {/* 背景グリッド */}
         {gridLines.map((points, i) => (
           <polygon
             key={i}
@@ -76,22 +123,24 @@ export const RadarChart: React.FC<Props> = ({ skills, color, title }) => {
             strokeWidth="1"
           />
         ))}
-        {/* Axis lines */}
+        {/* 軸線 */}
         {Array.from({ length: pointsCount }).map((_, i) => {
-          const { x, y } = getCoordinates(i, levels);
+          const r = radius;
+          const angle = i * angleStep - Math.PI / 2;
           return (
             <line
               key={i}
               x1={center}
               y1={center}
-              x2={x}
-              y2={y}
+              x2={center + r * Math.cos(angle)}
+              y2={center + r * Math.sin(angle)}
               stroke="#e5e7eb"
               strokeWidth="1"
             />
           );
         })}
-        {/* Data area */}
+
+        {/* 面積エリア (Polygon) */}
         {skills.length > 0 && (
           <polygon
             points={dataPoints}
@@ -99,20 +148,33 @@ export const RadarChart: React.FC<Props> = ({ skills, color, title }) => {
             fillOpacity="0.25"
             stroke={color}
             strokeWidth="3"
+            strokeLinejoin="round"
             className="drop-shadow-sm"
           />
         )}
-        {/* Data points */}
+
+        {/* 各頂点のドット */}
         {skills.map((s, i) => {
-          const { x, y } = getCoordinates(i, s.level);
-          return <circle key={i} cx={x} cy={y} r="4" fill={color} className="stroke-white stroke-2" />;
+          const { x, y } = getCoordinates(i, s.level, progress);
+          return (
+            <circle 
+              key={`${s.id}-${i}`} 
+              cx={x} 
+              cy={y} 
+              r={progress > 0.1 ? 4 : 0}
+              fill={color} 
+              className="stroke-white stroke-2 shadow-sm"
+            />
+          );
         })}
-        {/* Labels */}
+
+        {/* 項目ラベル */}
         {labels}
-        {/* Scale numbers */}
+
+        {/* 目盛り数字 */}
         {[1, 2, 3, 4, 5].map(l => {
-             const {y} = getCoordinates(0, l);
-             return <text key={l} x={center} y={y} textAnchor="middle" className="text-[9px] fill-gray-300 font-mono" dy="-4">{l}</text>
+             const r = (radius / levels) * l;
+             return <text key={l} x={center} y={center - r} textAnchor="middle" className="text-[9px] fill-gray-300 font-mono" dy="-4">{l}</text>
         })}
       </svg>
     </div>
