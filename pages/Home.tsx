@@ -117,7 +117,7 @@ export const Home: React.FC = () => {
 
       {/* 1. Profile Section */}
       <section id="profile" className="py-24 bg-earth-50 relative overflow-hidden">
-        <DeerLineArt className="absolute top-3 right-[50px] w-80 h-80 text-forest-200 pointer-events-none object-contain" opacity={1} />
+        <DeerLineArt className="absolute top-3 right-[30px] w-80 h-80 text-forest-200 pointer-events-none object-contain" opacity={1} />
         <div className="max-w-6xl mx-auto px-6 relative z-10">
             <SectionTitle en="Profile" jp="私について" />
             <div className="flex flex-col md:flex-row items-start gap-12">
