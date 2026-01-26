@@ -96,6 +96,10 @@ export const Home: React.FC = () => {
         });
     }
   };
+  
+  const resetSentStatus = () => {
+    setSentStatus('idle');
+  };
 
   const filteredSkills = skills.filter(s => s.category === activeSkillTab);
 
@@ -367,25 +371,92 @@ export const Home: React.FC = () => {
       {/* 7. Contact Section */}
       <section id="contact" className="py-24 bg-earth-50 border-t border-earth-100">
         <div className="max-w-3xl mx-auto px-6">
-            <SectionTitle en="Contact" jp="少しでもご興味をお持ちいただけましたら、下記よりお問い合わせいただきますようにお願いします。" />
-            <div className="bg-white p-8 rounded-xl border border-earth-100 shadow-sm">
-                <form ref={formRef} onSubmit={sendEmail} className="space-y-6">
-                    <div>
-                        <label className="block text-sm font-bold text-earth-800 mb-2">お名前</label>
-                        <input type="text" name="user_name" required className="w-full px-4 py-3 rounded border border-earth-200" />
+            <SectionTitle en="Contact" jp="お問い合わせ" />
+            <div className="bg-white p-6 md:p-12 rounded-2xl border border-earth-100 shadow-xl relative overflow-hidden">
+                {sentStatus === 'success' ? (
+                  <div className="text-center py-8 animate-fadeIn">
+                    <div className="w-20 h-20 bg-forest-50 text-forest-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                      </svg>
                     </div>
-                    <div>
-                        <label className="block text-sm font-bold text-earth-800 mb-2">メールアドレス</label>
-                        <input type="email" name="user_email" required className="w-full px-4 py-3 rounded border border-earth-200" />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-bold text-earth-800 mb-2">メッセージ</label>
-                        <textarea name="message" rows={5} required className="w-full px-4 py-3 rounded border border-earth-200"></textarea>
-                    </div>
-                    <button type="submit" disabled={sending} className="w-full py-4 rounded-full font-bold text-white bg-forest-600 hover:bg-forest-700 transition-colors">
-                        {sending ? '送信中...' : 'メッセージを送信する'}
+                    <h3 className="text-2xl font-bold text-earth-900 mb-4 serif">Message Sent!</h3>
+                    <p className="text-earth-600 mb-8 leading-relaxed">
+                      お問い合わせありがとうございます。メッセージは正常に送信されました。<br />
+                      内容を確認の上、折り返しご連絡させていただきます。
+                    </p>
+                    <button 
+                      onClick={resetSentStatus} 
+                      className="inline-flex items-center gap-2 text-forest-700 font-bold hover:underline"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                      </svg>
+                      別のメッセージを送る
                     </button>
-                </form>
+                  </div>
+                ) : (
+                  <>
+                    <form ref={formRef} onSubmit={sendEmail} className="space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div>
+                              <label className="block text-[10px] font-black uppercase tracking-widest text-earth-400 mb-2">お名前 <span className="text-forest-600">*</span></label>
+                              <input 
+                                type="text" 
+                                name="user_name" 
+                                required 
+                                className="w-full px-4 py-3.5 rounded-lg border border-earth-100 bg-earth-50/50 focus:bg-white focus:ring-2 focus:ring-forest-500/20 focus:border-forest-500 outline-none transition-all" 
+                                placeholder="Gakuto Ito"
+                              />
+                          </div>
+                          <div>
+                              <label className="block text-[10px] font-black uppercase tracking-widest text-earth-400 mb-2">メールアドレス <span className="text-forest-600">*</span></label>
+                              <input 
+                                type="email" 
+                                name="user_email" 
+                                required 
+                                className="w-full px-4 py-3.5 rounded-lg border border-earth-100 bg-earth-50/50 focus:bg-white focus:ring-2 focus:ring-forest-500/20 focus:border-forest-500 outline-none transition-all" 
+                                placeholder="example@mail.com"
+                              />
+                          </div>
+                        </div>
+                        <div>
+                            <label className="block text-[10px] font-black uppercase tracking-widest text-earth-400 mb-2">メッセージ <span className="text-forest-600">*</span></label>
+                            <textarea 
+                              name="message" 
+                              rows={5} 
+                              required 
+                              className="w-full px-4 py-3.5 rounded-lg border border-earth-100 bg-earth-50/50 focus:bg-white focus:ring-2 focus:ring-forest-500/20 focus:border-forest-500 outline-none transition-all resize-none"
+                              placeholder="ご質問やご相談内容をご記入ください"
+                            ></textarea>
+                        </div>
+                        
+                        {sentStatus === 'error' && (
+                          <div className="p-4 bg-red-50 text-red-700 rounded-lg text-sm font-medium animate-fadeIn">
+                            エラーが発生しました。時間を置いて再度お試しいただくか、SNS等からご連絡ください。
+                          </div>
+                        )}
+
+                        <button 
+                          type="submit" 
+                          disabled={sending} 
+                          className={`w-full py-4 rounded-full font-bold text-white transition-all flex items-center justify-center gap-3 shadow-lg ${
+                            sending ? 'bg-earth-300 cursor-not-allowed' : 'bg-forest-600 hover:bg-forest-700 hover:shadow-xl'
+                          }`}
+                        >
+                            {sending ? (
+                              <>
+                                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                送信中...
+                              </>
+                            ) : 'メッセージを送信する'}
+                        </button>
+                    </form>
+                    <p className="text-[10px] text-earth-400 text-center mt-6 tracking-widest uppercase">
+                      Usually replies within 2-3 business days.
+                    </p>
+                  </>
+                )}
             </div>
         </div>
       </section>
