@@ -108,19 +108,19 @@ export const Home: React.FC = () => {
     'Technology': {
       title: 'Technology',
       color: '#f87171',
-      desc: 'フロントエンドからバックエンド、さらにはIoTデバイスの製作まで、現場の課題を解決するための実装力を磨いています。特に現場での運用に耐えうる堅牢なシステム構築を重視しています。',
+      desc: 'フロントエンドからバックエンド、さらにはIoTデバイスの製作まで、現場の課題を解決するための実装力を磨いています。技術面ではAIを積極的に活用し、効率的かつ効果的な開発を目指しています。',
       levels: ["5 - Super", "4 - Always", "3 - Often", "2 - Sometimes", "1 - Beginner"]
     },
     'Design': {
       title: 'Design',
       color: '#34d399',
-      desc: '単なる美しさだけでなく、ユーザー体験（UX）に基づいた設計を心がけています。狩猟現場での使いやすさや、情報の伝わりやすさをエンジニアリングの視点と融合させています。',
+      desc: '単なる美しさだけでなく、ユーザー体験（UX）に基づいた設計を心がけています。ユーザーの使う場面、シーンを想像し、その体験がより良くなるように努めています。',
       levels: ["5 - Super", "4 - Always", "3 - Often", "2 - Sometimes", "1 - Beginner"]
     },
     'Other': {
       title: 'Other',
       color: '#fbbf24',
-      desc: 'フィールドワークを通じて課題の本質を捉え、それを解決するためのビジネスモデルや戦略を立案します。地域社会とのコミュニケーションを大切にし、持続可能な産業構造の構築を目指します。',
+      desc: '現場での体験やヒアリングを通じて課題の本質を捉え、それを解決するためのビジネスモデルや戦略を立案します。地域社会とのコミュニケーションを大切にし、持続可能な産業構造の構築を目指します。',
       levels: ["5 - Super", "4 - Always", "3 - Often", "2 - Sometimes", "1 - Beginner"]
     }
   };
@@ -188,27 +188,25 @@ export const Home: React.FC = () => {
           
           <div className="mt-12">
             <h3 className="text-2xl md:text-4xl font-bold serif text-earth-900 mb-10 leading-relaxed text-center md:text-left">
-              あなたの世界をより楽しくより大きく<br />
+              あなたの世界をより楽しくより大きく<br /><br />
             </h3>
             
             <div className="prose prose-lg prose-earth text-earth-700 leading-loose space-y-8 max-w-3xl">
               <p>
-                笑顔でいること<br />
-                楽しむこと<br />
-                成長すること<br /><br />
-                
-                それだけで、世界は少しずつよりよくなるのではないかと考えています。<br /><br />
-
-                まずは目の前のあなたを、技術や経験、ビジネスの力で支え、あなたの世界をより楽しくより大きくすること。<br />
-                それが私の志です。<br /><br />
-
-
+                今ある世界はきっと楽しい。<br />
+                今ある世界はきっと私たちに成長をもたらしてくれる。<br />
+                でも、その世界がもっと楽しくなったら、もっと私たちの成長につながったら、<br />
+                どんなにもワクワクする世界が待っているのだろうか。<br />
               </p>
               <p>
-                私は、テクノロジーを活用した効率的な捕獲管理と、捕獲個体を無駄にしない経済循環の仕組みをデザインすることで、狩猟を「ボランティアベースの駆除」から「持続可能な産業」へとアップデートしたいと考えています。
+                私は目の前のクライアント、あなたに寄り添い、<br />
+                あなたの世界をより楽しく、より大きくするために、<br />
+                私の持つ力を最大限に活用し、あなたにとってのより良い世界を共に作りたい。<br />
               </p>
-              <p className="font-bold text-forest-700 text-xl border-l-4 border-forest-600 pl-6 py-2">
-                エンジニアリングの力で、現場の苦労を希望に変える。<br className="hidden md:inline" />それが私の目指す未来です。
+              <p>
+                そのために、テクノロジーやビジネスの力を駆使し、現場の声に寄り添い、<br />
+                私にしかできないスピードで、方法で、問題解決のためのソリューションを提案すること。<br />
+                それが私の目指すエンジニア/コンサルタントの姿です。<br />
               </p>
             </div>
           </div>
@@ -226,16 +224,16 @@ export const Home: React.FC = () => {
               <h4 className="text-[10px] font-black text-forest-600 uppercase tracking-widest mb-2">Goal 01</h4>
               <h3 className="text-xl font-bold text-earth-900 mb-4 serif">Field-Oriented<br /><span className="text-sm font-sans font-normal text-earth-500">現場至上主義</span></h3>
               <p className="text-sm text-earth-600 leading-relaxed">
-                机上の空論ではなく、自らフィールドに出ることで、当事者しか気づけない「不都合な真実」や「小さな違和感」を拾い上げること目指します。
+                机上の空論ではなく、自らフィールドに出ることで、当事者しか気づけない「不都合な真実」や「小さな違和感」を拾い上げ、仮説・検証を繰り返して問題解決を目指します。
               </p>
             </div>
 
             {/* Goal 2 */}
             <div className="bg-white p-8 rounded-2xl shadow-sm border border-earth-100 hover:shadow-xl transition-all duration-500 group">
               <h4 className="text-[10px] font-black text-forest-600 uppercase tracking-widest mb-2">Goal 02</h4>
-              <h3 className="text-xl font-bold text-earth-900 mb-4 serif">Engineering Translation<br /><span className="text-sm font-sans font-normal text-earth-500">技術翻訳力</span></h3>
+              <h3 className="text-xl font-bold text-earth-900 mb-4 serif">Critical Analysis<br /><span className="text-sm font-sans font-normal text-earth-500">批判的分析力</span></h3>
               <p className="text-sm text-earth-600 leading-relaxed">
-                現場の「なんとなく大変」という抽象的な課題を、データや仕様へと翻訳する能力。ハードウェアからクラウドまで、領域を横断して解決策を形にして仮説・検証を繰り返し行うことを目指します。
+                現場の「なんとなく大変」という抽象的な課題を、具体的なデータや事象に分析する力。領域を横断して批判的に物事を捉え、当事者ですら気づかない解決策の糸口を見出すことを目指します。
               </p>
             </div>
 
@@ -244,7 +242,7 @@ export const Home: React.FC = () => {
               <h4 className="text-[10px] font-black text-forest-600 uppercase tracking-widest mb-2">Goal 03</h4>
               <h3 className="text-xl font-bold text-earth-900 mb-4 serif">System Design<br /><span className="text-sm font-sans font-normal text-earth-500">持続可能な設計思考</span></h3>
               <p className="text-sm text-earth-600 leading-relaxed">
-                単なる効率化ツールの提供に留まらず、ビジネスや資本主義経済との接続など、ビジネスモデルと社会調和を見据えた全体設計を重視することを目指します。
+                単なる効率化ツールの提供に留まらず、そのソリューションによって生み出される価値を常に意識し、ビジネスモデルと社会調和を見据えた全体設計を重視することを目指します。
               </p>
             </div>
           </div>
