@@ -15,6 +15,10 @@ export const Home: React.FC = () => {
   const [latestNews, setLatestNews] = useState<News[]>([]);
   const [skills, setSkills] = useState<Skill[]>([]);
   const [activeSkillTab, setActiveSkillTab] = useState<SkillCategory>('Technology');
+
+  // インジケーターの動的スタイル管理
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
   
   const [heroImages, setHeroImages] = useState<string[]>([
     "images/hero-images/1.jpg"
@@ -24,6 +28,27 @@ export const Home: React.FC = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const [sending, setSending] = useState(false);
   const [sentStatus, setSentStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const skillCategories: SkillCategory[] = ['Technology', 'Design', 'Entrepreneurship'];
+
+  // タブの位置と幅を計算する関数
+  const updateIndicator = () => {
+    const index = skillCategories.indexOf(activeSkillTab);
+    const activeTabEl = tabRefs.current[index];
+    if (activeTabEl) {
+      setIndicatorStyle({
+        left: activeTabEl.offsetLeft,
+        width: activeTabEl.offsetWidth,
+      });
+    }
+  };
+
+  useEffect(() => {
+    updateIndicator();
+    // ウィンドウのリサイズ時にも位置を再計算
+    window.addEventListener('resize', updateIndicator);
+    return () => window.removeEventListener('resize', updateIndicator);
+  }, [activeSkillTab, skills]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -72,26 +97,24 @@ export const Home: React.FC = () => {
 
   const categoryInfo: Record<SkillCategory, { title: string, color: string, desc: string, levels: string[] }> = {
     'Technology': {
-      title: 'テクノロジー',
+      title: 'Technology',
       color: '#f87171',
       desc: 'フロントエンドからバックエンド、さらにはIoTデバイスの製作まで、現場の課題を解決するための実装力を磨いています。特に現場での運用に耐えうる堅牢なシステム構築を重視しています。',
       levels: ["5 - Super", "4 - Always", "3 - Often", "2 - Sometimes", "1 - Beginner"]
     },
     'Design': {
-      title: 'デザイン',
+      title: 'Design',
       color: '#34d399',
       desc: '単なる美しさだけでなく、ユーザー体験（UX）に基づいた設計を心がけています。狩猟現場での使いやすさや、情報の伝わりやすさをエンジニアリングの視点と融合させています。',
       levels: ["5 - Super", "4 - Always", "3 - Often", "2 - Sometimes", "1 - Beginner"]
     },
     'Entrepreneurship': {
-      title: '起業家精神',
+      title: 'Entrepreneurship',
       color: '#fbbf24',
       desc: 'フィールドワークを通じて課題の本質を捉え、それを解決するためのビジネスモデルや戦略を立案します。地域社会とのコミュニケーションを大切にし、持続可能な産業構造の構築を目指します。',
       levels: ["5 - Super", "4 - Always", "3 - Often", "2 - Sometimes", "1 - Beginner"]
     }
   };
-
-  const skillCategories: SkillCategory[] = ['Technology', 'Design', 'Entrepreneurship'];
 
   return (
     <Layout>
@@ -191,21 +214,24 @@ export const Home: React.FC = () => {
           </div>
 
           <div className="flex flex-col items-center">
-            {/* Elegant Tab System */}
-            <div className="relative inline-flex bg-white/50 backdrop-blur-md p-1.5 rounded-2xl border border-earth-200 shadow-sm mb-16 overflow-hidden">
+            {/* refを使用した動的なスライディングタブ */}
+            <div className="relative inline-flex bg-white/60 backdrop-blur-xl p-1.5 rounded-[20px] border border-earth-200 shadow-sm mb-16 overflow-hidden">
               <div 
                 className="absolute top-1.5 bottom-1.5 transition-all duration-700 cubic-bezier(0.65, 0, 0.35, 1) rounded-xl shadow-lg"
                 style={{
-                  left: `${(skillCategories.indexOf(activeSkillTab) / skillCategories.length) * 100}%`,
-                  width: `${100 / skillCategories.length}%`,
-                  backgroundColor: categoryInfo[activeSkillTab].color
+                  left: `${indicatorStyle.left}px`,
+                  width: `${indicatorStyle.width}px`,
+                  backgroundColor: categoryInfo[activeSkillTab].color,
+                  transform: 'scale(0.96)',
                 }}
               ></div>
-              {skillCategories.map(cat => (
+              {skillCategories.map((cat, idx) => (
                 <button
                   key={cat}
+                  // Fix: Wrapped assignment in curly braces to ensure the callback returns void.
+                  ref={el => { tabRefs.current[idx] = el; }}
                   onClick={() => setActiveSkillTab(cat)}
-                  className={`relative z-10 px-8 py-3 rounded-xl font-black text-xs uppercase tracking-widest transition-colors duration-500 whitespace-nowrap ${
+                  className={`relative z-10 px-10 py-3.5 rounded-xl font-black text-[10px] uppercase tracking-[0.2em] transition-colors duration-500 whitespace-nowrap ${
                     activeSkillTab === cat ? 'text-white' : 'text-earth-400 hover:text-earth-600'
                   }`}
                 >
@@ -214,16 +240,14 @@ export const Home: React.FC = () => {
               ))}
             </div>
 
-            {/* Content Container with Unified Transition */}
+            {/* コンテンツカード */}
             <div className="w-full max-w-5xl bg-white rounded-[40px] shadow-2xl border border-earth-100 p-8 md:p-16 relative overflow-hidden">
-              {/* Subtle Ambient Color Bloom */}
               <div 
-                className="absolute inset-0 opacity-[0.02] transition-colors duration-1000"
+                className="absolute inset-0 opacity-[0.03] transition-colors duration-1000 pointer-events-none"
                 style={{ backgroundColor: categoryInfo[activeSkillTab].color }}
               ></div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                {/* Left: Morphing Radar Chart */}
                 <div className="relative order-2 lg:order-1 flex justify-center">
                    <RadarChart 
                       title={activeSkillTab} 
@@ -237,7 +261,6 @@ export const Home: React.FC = () => {
                    />
                 </div>
 
-                {/* Right: Cross-fading Description */}
                 <div className="relative order-1 lg:order-2 h-full min-h-[300px] flex flex-col justify-center">
                   <div key={activeSkillTab} className="animate-fadeIn space-y-8">
                     <div>

@@ -84,7 +84,6 @@ export const RadarChart: React.FC<Props> = ({ skills, color, title }) => {
     const duration = 900;
     const p = Math.min(elapsed / duration, 1);
     
-    // 滑らかなイージング
     const ease = 1 - Math.pow(1 - p, 3); 
     setProgress(ease);
 
