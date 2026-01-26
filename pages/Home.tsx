@@ -187,7 +187,6 @@ export const Home: React.FC = () => {
       <section id="skills" className="py-32 bg-earth-50 border-t border-earth-100 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="text-center mb-20">
-            <h2 className="text-xs font-black text-earth-400 uppercase tracking-[0.5em] mb-4">Competency & Tools</h2>
             <h3 className="text-4xl font-bold serif text-earth-900">My skill set</h3>
           </div>
 

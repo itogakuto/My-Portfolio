@@ -48,8 +48,8 @@ const Header: React.FC = () => {
   return (
     <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-earth-50/90 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-6'}`}>
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-        <Link to="/" className="text-xl font-bold tracking-wider serif text-earth-900 group">
-          <span className="text-forest-600 transition-colors group-hover:text-earth-900">ITO GAKUTO's Portfolio </span>
+        <Link to="/" className="text-xl font-bold tracking-wider serif text-forest-900 group">
+          <span className="text-earth-600 transition-colors group-hover:text-earth-900">ITO GAKUTO's Portfolio </span>
         </Link>
         <nav className="hidden md:flex space-x-8">
           {navLinks.map((link) => {
