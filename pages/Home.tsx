@@ -141,7 +141,7 @@ export const Home: React.FC = () => {
               世界をより楽しくより大きく
             </h1>
             <p className="text-earth-200 max-w-3xl mx-auto mb-8 leading-relaxed text-lg animate-fadeIn" style={{ animationDelay: '0.4s' }}>
-              多分野を横断する技術と経験で、世界を変えていく"最強の右腕"を目指して。
+              現場×テクノロジー×ビジネスで課題を解決するエンジニア/コンサルタントを目指して。
             </p>
           </div>
         </div>
@@ -160,19 +160,19 @@ export const Home: React.FC = () => {
                 </div>
                 <div className="w-full md:w-2/3">
                     <h3 className="text-3xl font-bold serif text-earth-900 mb-2">伊藤 楽大 <span className="text-xl font-sans font-normal text-earth-500 ml-2">Ito Gakuto</span></h3>
-                    <p className="text-forest-700 font-bold mb-6 text-lg">神山まるごと高等専門学校 デザイン・エンジニアリング学科</p>
+                    <p className="text-forest-700 font-bold mb-6 text-lg">静岡県浜松市出身 徳島県在住<br />神山まるごと高等専門学校 デザイン・エンジニアリング学科</p>
                     <div className="prose prose-earth text-earth-700 leading-loose">
                         <p>
-                          情報工学を専門とし、web開発やアプリ開発を中心に据え、新規事業開発や主催イベントの開催など、幅広く活動を行ってきました。 いずれの活動においても主体性を発揮し、それぞれの理想的な結果の実現に貢献してきました。 また、農業や狩猟などに関する知見もあり、多分野を横断した多角的な思考および現場の声に則したプロダクト開発を行う点も私の強みです。
+                          情報工学を専門とし、web開発やアプリ開発を中心に据え、新規事業開発や主催イベントの開催など、幅広く活動を行ってきました。 いずれの活動においても主体性を発揮し、それぞれの理想的な結果の実現に貢献してきました。 また、農業や狩猟などに関する好奇心が強く、多分野を横断した多角的な思考および現場の声に則したソリューションを提案するエンジニア・コンサルタントを目指しています。
                         </p>
                         <p><br />
                           現在は編入学に向けて準備を進めつつ、技術力の向上を目指しています。
                         </p>
                         <p>
-                          これまでさまざまな活動をしてきたものの、その力はまだまだ不十分だと感じています。
+                          これまでさまざまな活動をしてきたものの、その力は実務においてまだまだ不十分だと感じています。
                         </p>
                         <p><br />
-                          今後、企業様へのインターンシップや進学後の研究活動等において、さらなる技術力の向上を目指し、多分野に知見を持つ技術的素養を持った人材として、現場主体の課題解決を通じて社会に貢献していきたいと考えています。
+                          今後、企業様へのインターンシップや進学後の研究活動等において、さらなる技術力/ビジネススキル等の向上を目指し、多分野に知見を持つ技術的素養を持った人材として、現場主体の課題解決を通じて社会に貢献していきたいと考えています。
                         </p>
                     </div>
                 </div>
@@ -215,8 +215,44 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
+      {/* NEW: My Feature Section */}
+      <section id="features" className="py-24 bg-earth-50 border-t border-earth-100 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <SectionTitle en="My Goals" jp="私の目標" />
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+            {/* Goal 1 */}
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-earth-100 hover:shadow-xl transition-all duration-500 group">
+              <h4 className="text-[10px] font-black text-forest-600 uppercase tracking-widest mb-2">Goal 01</h4>
+              <h3 className="text-xl font-bold text-earth-900 mb-4 serif">Field-Oriented<br /><span className="text-sm font-sans font-normal text-earth-500">現場至上主義</span></h3>
+              <p className="text-sm text-earth-600 leading-relaxed">
+                机上の空論ではなく、自らフィールドに出ることで、当事者しか気づけない「不都合な真実」や「小さな違和感」を拾い上げること目指します。
+              </p>
+            </div>
+
+            {/* Goal 2 */}
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-earth-100 hover:shadow-xl transition-all duration-500 group">
+              <h4 className="text-[10px] font-black text-forest-600 uppercase tracking-widest mb-2">Goal 02</h4>
+              <h3 className="text-xl font-bold text-earth-900 mb-4 serif">Engineering Translation<br /><span className="text-sm font-sans font-normal text-earth-500">技術翻訳力</span></h3>
+              <p className="text-sm text-earth-600 leading-relaxed">
+                現場の「なんとなく大変」という抽象的な課題を、データや仕様へと翻訳する能力。ハードウェアからクラウドまで、領域を横断して解決策を形にして仮説・検証を繰り返し行うことを目指します。
+              </p>
+            </div>
+
+            {/* Goal 3 */}
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-earth-100 hover:shadow-xl transition-all duration-500 group">
+              <h4 className="text-[10px] font-black text-forest-600 uppercase tracking-widest mb-2">Goal 03</h4>
+              <h3 className="text-xl font-bold text-earth-900 mb-4 serif">System Design<br /><span className="text-sm font-sans font-normal text-earth-500">持続可能な設計思考</span></h3>
+              <p className="text-sm text-earth-600 leading-relaxed">
+                単なる効率化ツールの提供に留まらず、ビジネスや資本主義経済との接続など、ビジネスモデルと社会調和を見据えた全体設計を重視することを目指します。
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* 3. Skillset Section */}
-      <section id="skills" className="py-24 md:py-32 bg-earth-50 border-t border-earth-100 relative overflow-hidden">
+      <section id="skills" className="py-24 md:py-32 bg-white border-t border-earth-100 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="text-center mb-16 md:mb-20">
             <h2 className="text-[10px] md:text-xs font-black text-earth-400 uppercase tracking-[0.5em] mb-4">Competency & Tools</h2>
@@ -250,7 +286,7 @@ export const Home: React.FC = () => {
             </div>
 
             {/* コンテンツカード：レスポンシブレイアウト */}
-            <div className="w-full max-w-5xl bg-white rounded-3xl md:rounded-[40px] shadow-2xl border border-earth-100 p-6 md:p-16 relative overflow-hidden">
+            <div className="w-full max-w-5xl bg-earth-50 rounded-3xl md:rounded-[40px] shadow-2xl border border-earth-100 p-6 md:p-16 relative overflow-hidden">
               <div 
                 className="absolute inset-0 opacity-[0.03] transition-colors duration-1000 pointer-events-none"
                 style={{ backgroundColor: categoryInfo[activeSkillTab].color }}
@@ -313,7 +349,7 @@ export const Home: React.FC = () => {
       </section>
 
       {/* 4. Projects Section */}
-      <section id="projects" className="py-24 bg-white border-t border-earth-100">
+      <section id="projects" className="py-24 bg-earth-50 border-t border-earth-100">
         <div className="max-w-7xl mx-auto px-6">
             <div className="flex justify-between items-end mb-12">
                 <SectionTitle en="Projects" jp="主な取り組み" />
@@ -330,7 +366,7 @@ export const Home: React.FC = () => {
       </section>
 
       {/* 5. News Section */}
-      <section id="news" className="py-16 bg-earth-50 border-t border-earth-100">
+      <section id="news" className="py-16 bg-white border-t border-earth-100">
         <div className="max-w-6xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-start gap-8">
             <div className="md:w-1/4">
@@ -349,7 +385,7 @@ export const Home: React.FC = () => {
       </section>
 
       {/* 6. Hobbies & Special Experiences (Mini Section) */}
-      <section id="experiences-minimal" className="py-32 bg-white relative overflow-hidden border-t border-earth-100">
+      <section id="experiences-minimal" className="py-32 bg-earth-50 relative overflow-hidden border-t border-earth-100">
         <div className="max-w-4xl mx-auto px-6 text-center">
             <h2 className="text-3xl font-bold serif text-earth-900 mb-6">My Experiences</h2>
             <p className="text-earth-500 mb-10 max-w-lg mx-auto leading-loose text-sm italic">
@@ -370,7 +406,7 @@ export const Home: React.FC = () => {
       </section>
 
       {/* 7. Contact Section */}
-      <section id="contact" className="py-24 bg-earth-50 border-t border-earth-100">
+      <section id="contact" className="py-24 bg-white border-t border-earth-100">
         <div className="max-w-3xl mx-auto px-6">
             <SectionTitle en="Contact" jp="お問い合わせ" />
             <div className="bg-white p-6 md:p-12 rounded-2xl border border-earth-100 shadow-xl relative overflow-hidden">
