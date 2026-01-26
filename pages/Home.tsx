@@ -21,7 +21,13 @@ export const Home: React.FC = () => {
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
   
   const [heroImages, setHeroImages] = useState<string[]>([
-    "images/hero-images/1.jpg"
+    "images/hero-images/1.jpg",
+    "images/hero-images/2.jpg",
+    "images/hero-images/3.jpg",
+    "images/hero-images/4.jpg",
+    "images/hero-images/5.jpg",
+    "images/hero-images/6.jpg",
+    "images/hero-images/7.jpg"
   ]);
   const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
 
