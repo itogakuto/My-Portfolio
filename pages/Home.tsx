@@ -91,6 +91,8 @@ export const Home: React.FC = () => {
     }
   };
 
+  const skillCategories: SkillCategory[] = ['Technology', 'Design', 'Entrepreneurship'];
+
   return (
     <Layout>
       {/* Hero Section */}
@@ -181,90 +183,101 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* 3. Skillset Section */}
-      <section id="skills" className="py-24 bg-earth-50 border-t border-earth-100">
-        <div className="max-w-6xl mx-auto px-6">
-            <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold serif text-earth-900 mb-8">My skill set</h2>
-                <div className="max-w-3xl mx-auto mb-12 text-earth-600 leading-relaxed text-sm">
-                    <p>私の現在のスキルをグラフィカルにまとめました。フロントエンドからバックエンド、さらには現場での起業家精神まで幅広く取り組んでいます。</p>
-                </div>
+      {/* 3. Skillset Section - COMPLETELY REFRESHED LAYOUT */}
+      <section id="skills" className="py-32 bg-earth-50 border-t border-earth-100 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="text-center mb-20">
+            <h2 className="text-xs font-black text-earth-400 uppercase tracking-[0.5em] mb-4">Competency & Tools</h2>
+            <h3 className="text-4xl font-bold serif text-earth-900">My skill set</h3>
+          </div>
 
-                {/* Filter Tabs */}
-                <div className="flex flex-wrap justify-center gap-4 mb-16">
-                    {(['Technology', 'Design', 'Entrepreneurship'] as SkillCategory[]).map(cat => (
-                        <button
-                            key={cat}
-                            onClick={() => setActiveSkillTab(cat)}
-                            className={`px-8 py-3 rounded-full font-bold transition-all duration-300 border-2 ${
-                                activeSkillTab === cat 
-                                ? 'bg-earth-900 text-white border-earth-900 shadow-lg' 
-                                : 'bg-white text-earth-400 border-earth-100 hover:border-earth-300'
-                            }`}
-                        >
-                            {categoryInfo[cat].title}
-                        </button>
-                    ))}
-                </div>
+          <div className="flex flex-col items-center">
+            {/* Elegant Tab System */}
+            <div className="relative inline-flex bg-white/50 backdrop-blur-md p-1.5 rounded-2xl border border-earth-200 shadow-sm mb-16 overflow-hidden">
+              <div 
+                className="absolute top-1.5 bottom-1.5 transition-all duration-700 cubic-bezier(0.65, 0, 0.35, 1) rounded-xl shadow-lg"
+                style={{
+                  left: `${(skillCategories.indexOf(activeSkillTab) / skillCategories.length) * 100}%`,
+                  width: `${100 / skillCategories.length}%`,
+                  backgroundColor: categoryInfo[activeSkillTab].color
+                }}
+              ></div>
+              {skillCategories.map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveSkillTab(cat)}
+                  className={`relative z-10 px-8 py-3 rounded-xl font-black text-xs uppercase tracking-widest transition-colors duration-500 whitespace-nowrap ${
+                    activeSkillTab === cat ? 'text-white' : 'text-earth-400 hover:text-earth-600'
+                  }`}
+                >
+                  {categoryInfo[cat].title}
+                </button>
+              ))}
             </div>
 
-            {/* Content centered container */}
-            <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-center gap-12 md:gap-20 min-h-[450px]">
-                {/* Left: Chart - Centered in its half */}
-                <div className="w-full md:w-1/2 flex justify-center animate-fadeIn">
-                    <div className="bg-white p-8 md:p-12 rounded-3xl border border-earth-100 shadow-sm transition-all duration-500 hover:shadow-md">
-                        <RadarChart 
-                            title={activeSkillTab} 
-                            color={categoryInfo[activeSkillTab].color} 
-                            skills={filteredSkills.length > 0 ? filteredSkills : [
-                                {id:'d1', name:'HTML/CSS', level:4, category: activeSkillTab},
-                                {id:'d2', name:'JS', level:3, category: activeSkillTab},
-                                {id:'d3', name:'Python', level:5, category: activeSkillTab},
-                                {id:'d4', name:'IoT', level:4, category: activeSkillTab}
-                            ]} 
-                        />
-                    </div>
+            {/* Content Container with Unified Transition */}
+            <div className="w-full max-w-5xl bg-white rounded-[40px] shadow-2xl border border-earth-100 p-8 md:p-16 relative overflow-hidden">
+              {/* Subtle Ambient Color Bloom */}
+              <div 
+                className="absolute inset-0 opacity-[0.02] transition-colors duration-1000"
+                style={{ backgroundColor: categoryInfo[activeSkillTab].color }}
+              ></div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                {/* Left: Morphing Radar Chart */}
+                <div className="relative order-2 lg:order-1 flex justify-center">
+                   <RadarChart 
+                      title={activeSkillTab} 
+                      color={categoryInfo[activeSkillTab].color} 
+                      skills={filteredSkills.length > 0 ? filteredSkills : [
+                          {id:'d1', name:'Core', level:4, category: activeSkillTab},
+                          {id:'d2', name:'Tool', level:3, category: activeSkillTab},
+                          {id:'d3', name:'Method', level:5, category: activeSkillTab},
+                          {id:'d4', name:'Theory', level:4, category: activeSkillTab}
+                      ]} 
+                   />
                 </div>
 
-                {/* Right: Textual Explanation - Balanced and Centered horizontally */}
-                <div className="w-full md:w-1/2 text-left space-y-8 animate-slideInRight px-4 md:px-0">
+                {/* Right: Cross-fading Description */}
+                <div className="relative order-1 lg:order-2 h-full min-h-[300px] flex flex-col justify-center">
+                  <div key={activeSkillTab} className="animate-fadeIn space-y-8">
                     <div>
-                        <h3 className="text-2xl font-bold serif text-earth-900 mb-4 flex items-center gap-3">
-                            <span className="w-8 h-1 rounded-full" style={{ backgroundColor: categoryInfo[activeSkillTab].color }}></span>
-                            {categoryInfo[activeSkillTab].title}について
-                        </h3>
-                        <p className="text-earth-600 leading-loose text-sm md:text-base">
-                            {categoryInfo[activeSkillTab].desc}
-                        </p>
+                      <h4 className="text-[10px] font-black text-earth-300 uppercase tracking-[0.3em] mb-4">Focus Area</h4>
+                      <h3 className="text-3xl font-bold serif text-earth-900 mb-6">
+                        {categoryInfo[activeSkillTab].title}
+                      </h3>
+                      <p className="text-earth-600 leading-loose text-base">
+                        {categoryInfo[activeSkillTab].desc}
+                      </p>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div className="bg-white p-5 rounded-xl border border-earth-100 shadow-sm">
-                            <h4 className="text-[10px] font-black text-earth-400 uppercase tracking-[0.2em] mb-4">主要スタック</h4>
-                            <ul className="space-y-3">
-                                {filteredSkills.length > 0 ? filteredSkills.map(skill => (
-                                    <li key={skill.id} className="flex justify-between items-center text-sm border-b border-earth-50 pb-2">
-                                        <span className="font-bold text-earth-700">{skill.name}</span>
-                                        <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-earth-100 text-earth-500">Lv.{skill.level}</span>
-                                    </li>
-                                )) : <li className="text-xs text-earth-400 italic">No skills added yet</li>}
-                            </ul>
-                        </div>
-                        <div className="bg-earth-50/50 p-5 rounded-xl border border-earth-50">
-                            <h4 className="text-[10px] font-black text-earth-400 uppercase tracking-[0.2em] mb-4">習熟度スコア</h4>
-                            <ul className="space-y-1.5">
-                                {categoryInfo[activeSkillTab].levels.map((l, i) => (
-                                    <li key={i} className="text-[10px] text-earth-400 leading-tight">{l}</li>
-                                ))}
-                            </ul>
-                        </div>
+                    <div className="space-y-4">
+                      <h4 className="text-[10px] font-black text-earth-300 uppercase tracking-[0.3em] border-b border-earth-100 pb-2">Skill Inventory</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {filteredSkills.map(s => (
+                          <div 
+                            key={s.id} 
+                            className="flex items-center gap-3 px-4 py-2 bg-earth-50 rounded-full border border-earth-100 transition-all hover:border-earth-300"
+                          >
+                            <span className="text-xs font-bold text-earth-800">{s.name}</span>
+                            <div className="flex gap-0.5">
+                              {Array.from({ length: 5 }).map((_, i) => (
+                                <div 
+                                  key={i} 
+                                  className={`w-1.5 h-1.5 rounded-full transition-colors duration-700 ${i < s.level ? '' : 'bg-earth-200'}`}
+                                  style={{ backgroundColor: i < s.level ? categoryInfo[activeSkillTab].color : undefined }}
+                                ></div>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-
-                    <p className="text-[10px] text-forest-600 font-bold bg-forest-50 px-4 py-2 rounded-full inline-block border border-forest-100">
-                        ＊個人開発やプロジェクトでの実体験に基づき算出しています
-                    </p>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
       </section>
 
@@ -304,7 +317,7 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* 7. Hobbies & Special Experiences (Mini Section) */}
+      {/* 6. Hobbies & Special Experiences (Mini Section) */}
       <section id="experiences-minimal" className="py-32 bg-white relative overflow-hidden border-t border-earth-100">
         <div className="max-w-4xl mx-auto px-6 text-center">
             <h2 className="text-3xl font-bold serif text-earth-900 mb-6">My Experiences</h2>
@@ -325,7 +338,7 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* 6. Contact Section */}
+      {/* 7. Contact Section */}
       <section id="contact" className="py-24 bg-earth-50 border-t border-earth-100">
         <div className="max-w-3xl mx-auto px-6">
             <SectionTitle en="Contact" jp="少しでもご興味をお持ちいただけましたら、下記よりお問い合わせいただきますようにお願いします。" />
