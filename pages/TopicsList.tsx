@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Layout } from '../components/Layout';
 import { TopicCard } from '../components/TopicCard';
@@ -16,25 +17,19 @@ export const TopicsList: React.FC = () => {
       setErrorOccurred(false);
       
       try {
-        let query = supabase.from('topics').select('*').order('created_at', { ascending: false });
+        // sort_order 昇順を第一優先
+        let query = supabase.from('topics').select('*').order('sort_order', { ascending: true }).order('created_at', { ascending: false });
         
         if (filter !== 'all') {
           query = query.eq('category', filter);
         }
 
         const { data, error } = await query;
-        
         if (error) throw error;
-
-        // データが取得できた場合（空配列[]を含む）
-        if (data) {
-          setTopics(data);
-        }
+        if (data) setTopics(data);
       } catch (err) {
         console.error('Fetch error:', err);
         setErrorOccurred(true);
-        
-        // エラー時のみデモ用フォールバックデータを表示
         setTopics([
              {
                   id: '1', title: '自動罠作動時通知システム「TrapNote」', category: 'Projects', slug: 'trap-note',
@@ -71,7 +66,6 @@ export const TopicsList: React.FC = () => {
             <p className="text-earth-600">課題設定から社会実装まで、これまでの軌跡。</p>
           </div>
 
-          {/* Filter */}
           <div className="flex justify-center gap-4 mb-12 flex-wrap">
             {categories.map((cat) => (
               <button
@@ -88,7 +82,6 @@ export const TopicsList: React.FC = () => {
             ))}
           </div>
 
-          {/* Grid */}
           {loading ? (
             <div className="text-center py-20 text-earth-500">Loading...</div>
           ) : (

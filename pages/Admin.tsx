@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../services/supabase';
@@ -20,10 +21,10 @@ export const Admin: React.FC = () => {
   const [isCreating, setIsCreating] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
   
-  const [topicForm, setTopicForm] = useState<Partial<Topic>>({ category: 'Projects', tags: [], title: '', slug: '', summary: '', body: '', role: '', image_url: '' });
-  const [newsForm, setNewsForm] = useState<Partial<News>>({ title: '', short_text: '', date: new Date().toISOString().split('T')[0] });
-  const [skillForm, setSkillForm] = useState<Partial<Skill>>({ category: 'Technology', level: 3, name: '' });
-  const [expForm, setExpForm] = useState<Partial<Experience>>({ title: '', summary: '', body: '', slug: '', image_url: '' });
+  const [topicForm, setTopicForm] = useState<Partial<Topic>>({ category: 'Projects', tags: [], title: '', slug: '', summary: '', body: '', role: '', image_url: '', sort_order: 0 });
+  const [newsForm, setNewsForm] = useState<Partial<News>>({ title: '', short_text: '', date: new Date().toISOString().split('T')[0], sort_order: 0 });
+  const [skillForm, setSkillForm] = useState<Partial<Skill>>({ category: 'Technology', level: 3, name: '', sort_order: 0 });
+  const [expForm, setExpForm] = useState<Partial<Experience>>({ title: '', summary: '', body: '', slug: '', image_url: '', sort_order: 0 });
   
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploadPreview, setUploadPreview] = useState<string | null>(null);
@@ -47,16 +48,17 @@ export const Admin: React.FC = () => {
   const fetchData = async () => {
     setLoadingData(true);
     try {
-      const { data: topicsData } = await supabase.from('topics').select('*').order('created_at', { ascending: false });
+      // sort_orderの昇順を第一優先にする
+      const { data: topicsData } = await supabase.from('topics').select('*').order('sort_order', { ascending: true }).order('created_at', { ascending: false });
       if (topicsData) setTopics(topicsData);
       
-      const { data: newsData } = await supabase.from('news').select('*').order('created_at', { ascending: false });
+      const { data: newsData } = await supabase.from('news').select('*').order('sort_order', { ascending: true }).order('created_at', { ascending: false });
       if (newsData) setNews(newsData);
       
-      const { data: skillsData } = await supabase.from('skills').select('*').order('category', { ascending: true });
+      const { data: skillsData } = await supabase.from('skills').select('*').order('category', { ascending: true }).order('sort_order', { ascending: true });
       if (skillsData) setSkills(skillsData);
       
-      const { data: expData } = await supabase.from('experiences').select('*').order('created_at', { ascending: false });
+      const { data: expData } = await supabase.from('experiences').select('*').order('sort_order', { ascending: true }).order('created_at', { ascending: false });
       if (expData) setExperiences(expData);
     } catch (err) {
       console.error('Data fetch error:', err);
@@ -84,10 +86,10 @@ export const Admin: React.FC = () => {
       setSelectedFile(null);
       setUploadPreview(null);
       setTagInputValue('');
-      setTopicForm({ category: 'Projects', tags: [], title: '', slug: '', summary: '', body: '', role: '', image_url: '' });
-      setNewsForm({ title: '', short_text: '', date: new Date().toISOString().split('T')[0] });
-      setSkillForm({ category: 'Technology', level: 3, name: '' });
-      setExpForm({ title: '', summary: '', body: '', slug: '', image_url: '' });
+      setTopicForm({ category: 'Projects', tags: [], title: '', slug: '', summary: '', body: '', role: '', image_url: '', sort_order: 0 });
+      setNewsForm({ title: '', short_text: '', date: new Date().toISOString().split('T')[0], sort_order: 0 });
+      setSkillForm({ category: 'Technology', level: 3, name: '', sort_order: 0 });
+      setExpForm({ title: '', summary: '', body: '', slug: '', image_url: '', sort_order: 0 });
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,12 +101,9 @@ export const Admin: React.FC = () => {
   };
 
   const uploadImage = async (file: File, folder: string): Promise<string | null> => {
-      // フォルダ構造が二重にならないよう、常にルートからのパスを作成
       const fileExt = file.name.split('.').pop();
       const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 7)}.${fileExt}`;
       const filePath = `${folder}/${fileName}`;
-
-      console.log(`Uploading to bucket: images, path: ${filePath}`);
 
       const { error: uploadError } = await supabase.storage
           .from('images')
@@ -113,14 +112,8 @@ export const Admin: React.FC = () => {
             cacheControl: '3600'
           });
 
-      if (uploadError) {
-          console.error('Upload failed:', uploadError);
-          throw new Error('アップロード失敗: ' + uploadError.message);
-      }
-
-      // 公開URLを取得
+      if (uploadError) throw new Error('アップロード失敗: ' + uploadError.message);
       const { data } = supabase.storage.from('images').getPublicUrl(filePath);
-      console.log(`Generated Public URL: ${data.publicUrl}`);
       return data.publicUrl;
   };
 
@@ -151,13 +144,11 @@ export const Admin: React.FC = () => {
           if (activeTab === 'topics') {
               table = 'topics';
               const finalSlug = topicForm.slug || topicForm.title?.toLowerCase().replace(/[^a-z0-9ー\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF]+/g, '-').replace(/^-+|-+$/g, '') || `topic-${Date.now()}`;
-              
               let finalImageUrl = topicForm.image_url;
               if (selectedFile) {
                   const uploadedUrl = await uploadImage(selectedFile, 'topics');
                   if (uploadedUrl) finalImageUrl = uploadedUrl;
               }
-              
               payload = { ...topicForm, slug: finalSlug, image_url: finalImageUrl, status: 'published' };
           } else if (activeTab === 'news') {
               table = 'news';
@@ -168,13 +159,11 @@ export const Admin: React.FC = () => {
           } else if (activeTab === 'experiences') {
               table = 'experiences';
               const finalSlug = expForm.slug || expForm.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || `exp-${Date.now()}`;
-              
               let finalImageUrl = expForm.image_url;
               if (selectedFile) {
                   const uploadedUrl = await uploadImage(selectedFile, 'experiences');
                   if (uploadedUrl) finalImageUrl = uploadedUrl;
               }
-              
               payload = { ...expForm, slug: finalSlug, image_url: finalImageUrl };
           }
 
@@ -215,7 +204,7 @@ export const Admin: React.FC = () => {
   if (!session) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-earth-100 px-6">
-        <form onSubmit={handleAuth} className="bg-white p-8 rounded shadow-lg w-full max-sm">
+        <form onSubmit={handleAuth} className="bg-white p-8 rounded shadow-lg w-full max-w-sm">
           <h2 className="text-xl font-bold mb-6 text-earth-900 serif">Admin Login</h2>
           <div className="space-y-4">
             <div>
@@ -263,8 +252,9 @@ export const Admin: React.FC = () => {
                 <form onSubmit={handleSave} className="space-y-6 max-w-4xl">
                     {activeTab === 'topics' && (
                         <>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">タイトル</label><input required className="w-full border p-2 rounded" value={topicForm.title || ''} onChange={e=>setTopicForm({...topicForm, title: e.target.value})} /></div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div className="md:col-span-2"><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">タイトル</label><input required className="w-full border p-2 rounded" value={topicForm.title || ''} onChange={e=>setTopicForm({...topicForm, title: e.target.value})} /></div>
+                                <div><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">表示順 (小さい順)</label><input type="number" className="w-full border p-2 rounded" value={topicForm.sort_order || 0} onChange={e=>setTopicForm({...topicForm, sort_order: parseInt(e.target.value)})} /></div>
                                 <div><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">スラグ</label><input className="w-full border p-2 rounded bg-earth-50" value={topicForm.slug || ''} onChange={e=>setTopicForm({...topicForm, slug: e.target.value})} /></div>
                                 <div><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">カテゴリ</label>
                                     <select className="w-full border p-2 rounded" value={topicForm.category} onChange={e=>setTopicForm({...topicForm, category: e.target.value as Category})}>
@@ -281,38 +271,40 @@ export const Admin: React.FC = () => {
                                     <input type="file" accept="image/*" onChange={handleFileChange} className="block text-sm text-earth-500 file:bg-forest-50 file:text-forest-700" />
                                     {uploadPreview && <div className="w-32 h-20 rounded border overflow-hidden"><img src={uploadPreview} className="w-full h-full object-cover" /></div>}
                                 </div>
-                                <p className="text-[10px] text-earth-400 mt-1">※画像を保存するには「保存する」ボタンを押してください</p>
                             </div>
                             <div><label className="block text-xs font-bold text-earth-500 mb-1 uppercase tracking-wider">タグ</label><input className="w-full border p-3 rounded text-sm" placeholder="IoT、狩猟..." value={tagInputValue} onChange={e => handleTagChange(e.target.value)} /></div>
                         </>
                     )}
                     {activeTab === 'news' && (
                         <>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">ニュースタイトル</label><input required className="w-full border p-2 rounded" value={newsForm.title || ''} onChange={e=>setNewsForm({...newsForm, title: e.target.value})} /></div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div className="md:col-span-1"><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">ニュースタイトル</label><input required className="w-full border p-2 rounded" value={newsForm.title || ''} onChange={e=>setNewsForm({...newsForm, title: e.target.value})} /></div>
                                 <div><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">日付</label><input type="date" required className="w-full border p-2 rounded" value={newsForm.date || ''} onChange={e=>setNewsForm({...newsForm, date: e.target.value})} /></div>
+                                <div><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">表示順</label><input type="number" className="w-full border p-2 rounded" value={newsForm.sort_order || 0} onChange={e=>setNewsForm({...newsForm, sort_order: parseInt(e.target.value)})} /></div>
                             </div>
                             <div><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">リンクURL</label><input className="w-full border p-2 rounded" value={newsForm.short_text || ''} onChange={e=>setNewsForm({...newsForm, short_text: e.target.value})} /></div>
                         </>
                     )}
                     {activeTab === 'skills' && (
                         <>
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">スキル名</label><input required className="w-full border p-2 rounded" value={skillForm.name || ''} onChange={e=>setSkillForm({...skillForm, name: e.target.value})} /></div>
                                 <div><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">カテゴリ</label>
                                     <select className="w-full border p-2 rounded" value={skillForm.category} onChange={e=>setSkillForm({...skillForm, category: e.target.value as SkillCategory})}>
-                                        <option value="Technology">Technology</option><option value="Design">Design</option><option value="Other">Other</option>
+                                        <option value="Technology">Technology</option><option value="Design">Design</option><option value="Entrepreneurship">Entrepreneurship</option>
                                     </select>
                                 </div>
+                                <div><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">表示順</label><input type="number" className="w-full border p-2 rounded" value={skillForm.sort_order || 0} onChange={e=>setSkillForm({...skillForm, sort_order: parseInt(e.target.value)})} /></div>
                             </div>
                             <div><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">レベル (1-5)</label><input type="number" min="1" max="5" className="w-full border p-2 rounded" value={skillForm.level} onChange={e=>setSkillForm({...skillForm, level: parseInt(e.target.value)})} /></div>
                         </>
                     )}
                     {activeTab === 'experiences' && (
                         <>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">体験のタイトル</label><input required className="w-full border p-2 rounded" value={expForm.title || ''} onChange={e=>setExpForm({...expForm, title: e.target.value})} /></div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div className="md:col-span-1"><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">体験のタイトル</label><input required className="w-full border p-2 rounded" value={expForm.title || ''} onChange={e=>setExpForm({...expForm, title: e.target.value})} /></div>
                                 <div><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">スラグ</label><input className="w-full border p-2 rounded bg-earth-50" value={expForm.slug || ''} onChange={e=>setExpForm({...expForm, slug: e.target.value})} /></div>
+                                <div><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">表示順</label><input type="number" className="w-full border p-2 rounded" value={expForm.sort_order || 0} onChange={e=>setExpForm({...expForm, sort_order: parseInt(e.target.value)})} /></div>
                             </div>
                             <div><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">サマリー</label><textarea required className="w-full border p-2 rounded" rows={2} value={expForm.summary || ''} onChange={e=>setExpForm({...expForm, summary: e.target.value})} /></div>
                             <div><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">詳細内容</label><textarea className="w-full border p-2 rounded" rows={6} value={expForm.body || ''} onChange={e=>setExpForm({...expForm, body: e.target.value})} /></div>
@@ -344,19 +336,19 @@ export const Admin: React.FC = () => {
                         <div className="p-12 text-center text-earth-400">読み込み中...</div>
                     ) : (
                         <table className="w-full text-left">
-                            <thead><tr className="bg-earth-50 text-earth-400 text-[10px] uppercase font-bold tracking-widest"><th className="p-4">情報</th><th className="p-4">内容</th><th className="p-4 text-right">操作</th></tr></thead>
+                            <thead><tr className="bg-earth-50 text-earth-400 text-[10px] uppercase font-bold tracking-widest"><th className="p-4">順序</th><th className="p-4">情報</th><th className="p-4">内容</th><th className="p-4 text-right">操作</th></tr></thead>
                             <tbody className="divide-y divide-earth-50">
                                 {activeTab === 'skills' && skills.map(s => (
-                                    <tr key={s.id} className="hover:bg-earth-50 transition-colors"><td className="p-4"><span className="text-[10px] font-bold px-2 py-0.5 rounded bg-earth-200 text-earth-600">{s.category}</span></td><td className="p-4"><div className="font-bold text-earth-900">{s.name}</div><div className="text-xs text-earth-400">Level: {s.level}</div></td><td className="p-4 text-right"><button onClick={()=>handleEdit(s)} className="text-forest-600 font-bold text-xs mr-4 hover:underline">編集</button><button onClick={()=>handleDelete('skills', s.id)} className="text-red-500 font-bold text-xs hover:underline">削除</button></td></tr>
+                                    <tr key={s.id} className="hover:bg-earth-50 transition-colors"><td className="p-4 font-mono text-xs">{s.sort_order}</td><td className="p-4"><span className="text-[10px] font-bold px-2 py-0.5 rounded bg-earth-200 text-earth-600">{s.category}</span></td><td className="p-4"><div className="font-bold text-earth-900">{s.name}</div><div className="text-xs text-earth-400">Level: {s.level}</div></td><td className="p-4 text-right"><button onClick={()=>handleEdit(s)} className="text-forest-600 font-bold text-xs mr-4 hover:underline">編集</button><button onClick={()=>handleDelete('skills', s.id)} className="text-red-500 font-bold text-xs hover:underline">削除</button></td></tr>
                                 ))}
                                 {activeTab === 'topics' && topics.map(t => (
-                                    <tr key={t.id} className="hover:bg-earth-50 transition-colors"><td className="p-4"><span className="text-[10px] font-bold px-2 py-0.5 rounded bg-forest-100 text-forest-600">{t.category}</span></td><td className="p-4"><div className="font-bold text-earth-900">{t.title}</div><div className="text-[10px] text-earth-400 font-mono mb-1">/{t.slug}</div><div className="text-xs text-earth-400 line-clamp-1">{t.summary}</div></td><td className="p-4 text-right"><button onClick={()=>handleEdit(t)} className="text-forest-600 font-bold text-xs mr-4 hover:underline">編集</button><button onClick={()=>handleDelete('topics', t.id)} className="text-red-500 font-bold text-xs hover:underline">削除</button></td></tr>
+                                    <tr key={t.id} className="hover:bg-earth-50 transition-colors"><td className="p-4 font-mono text-xs">{t.sort_order}</td><td className="p-4"><span className="text-[10px] font-bold px-2 py-0.5 rounded bg-forest-100 text-forest-600">{t.category}</span></td><td className="p-4"><div className="font-bold text-earth-900">{t.title}</div><div className="text-[10px] text-earth-400 font-mono mb-1">/{t.slug}</div><div className="text-xs text-earth-400 line-clamp-1">{t.summary}</div></td><td className="p-4 text-right"><button onClick={()=>handleEdit(t)} className="text-forest-600 font-bold text-xs mr-4 hover:underline">編集</button><button onClick={()=>handleDelete('topics', t.id)} className="text-red-500 font-bold text-xs hover:underline">削除</button></td></tr>
                                 ))}
                                 {activeTab === 'news' && news.map(n => (
-                                    <tr key={n.id} className="hover:bg-earth-50 transition-colors"><td className="p-4"><span className="text-xs font-mono text-earth-400">{n.date}</span></td><td className="p-4"><div className="font-bold text-earth-900">{n.title}</div></td><td className="p-4 text-right"><button onClick={()=>handleEdit(n)} className="text-forest-600 font-bold text-xs mr-4 hover:underline">編集</button><button onClick={()=>handleDelete('news', n.id)} className="text-red-500 font-bold text-xs hover:underline">削除</button></td></tr>
+                                    <tr key={n.id} className="hover:bg-earth-50 transition-colors"><td className="p-4 font-mono text-xs">{n.sort_order}</td><td className="p-4"><span className="text-xs font-mono text-earth-400">{n.date}</span></td><td className="p-4"><div className="font-bold text-earth-900">{n.title}</div></td><td className="p-4 text-right"><button onClick={()=>handleEdit(n)} className="text-forest-600 font-bold text-xs mr-4 hover:underline">編集</button><button onClick={()=>handleDelete('news', n.id)} className="text-red-500 font-bold text-xs hover:underline">削除</button></td></tr>
                                 ))}
                                 {activeTab === 'experiences' && experiences.map(e => (
-                                    <tr key={e.id} className="hover:bg-earth-50 transition-colors"><td className="p-4"><div className="w-10 h-10 bg-earth-100 rounded overflow-hidden">{e.image_url && <img src={e.image_url} className="w-full h-full object-cover" />}</div></td><td className="p-4"><div className="font-bold text-earth-900">{e.title}</div><div className="text-xs text-earth-400 line-clamp-1">{e.summary}</div></td><td className="p-4 text-right"><button onClick={()=>handleEdit(e)} className="text-forest-600 font-bold text-xs mr-4 hover:underline">編集</button><button onClick={()=>handleDelete('experiences', e.id)} className="text-red-500 font-bold text-xs hover:underline">削除</button></td></tr>
+                                    <tr key={e.id} className="hover:bg-earth-50 transition-colors"><td className="p-4 font-mono text-xs">{e.sort_order}</td><td className="p-4"><div className="w-10 h-10 bg-earth-100 rounded overflow-hidden">{e.image_url && <img src={e.image_url} className="w-full h-full object-cover" />}</div></td><td className="p-4"><div className="font-bold text-earth-900">{e.title}</div><div className="text-xs text-earth-400 line-clamp-1">{e.summary}</div></td><td className="p-4 text-right"><button onClick={()=>handleEdit(e)} className="text-forest-600 font-bold text-xs mr-4 hover:underline">編集</button><button onClick={()=>handleDelete('experiences', e.id)} className="text-red-500 font-bold text-xs hover:underline">削除</button></td></tr>
                                 ))}
                             </tbody>
                         </table>

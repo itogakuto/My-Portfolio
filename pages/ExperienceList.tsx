@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Layout } from '../components/Layout';
 import { supabase } from '../services/supabase';
@@ -21,7 +22,8 @@ export const ExperienceList: React.FC = () => {
   useEffect(() => {
     const fetchExperiences = async () => {
       setLoading(true);
-      const { data } = await supabase.from('experiences').select('*').order('created_at', { ascending: false });
+      // sort_order 昇順を第一優先
+      const { data } = await supabase.from('experiences').select('*').order('sort_order', { ascending: true }).order('created_at', { ascending: false });
       if (data && data.length > 0) {
         setExperiences(data);
       } else {
@@ -118,7 +120,6 @@ export const ExperienceList: React.FC = () => {
                     <div className="book relative w-full h-full transform-style-3d" style={{ transform: `translateX(${currentPage === 0 ? '-25%' : '0%'})`, transition: 'transform 1s ease' }}>
                       <div className="absolute inset-0 bg-earth-900/10 blur-xl rounded-full transform translate-y-10 scale-x-90 opacity-20 pointer-events-none"></div>
 
-                      {/* Cover Page */}
                       <div className={`page book-page ${currentPage > 0 ? 'flipped' : ''}`} style={{ zIndex: getDesktopZIndex(0) }} onClick={() => currentPage === 0 && nextPage()}>
                         <div className="page-front bg-forest-900 border-r-4 border-forest-800 rounded-r-xl shadow-2xl flex flex-col items-center justify-center p-12 overflow-hidden">
                            <div className="absolute inset-4 border border-forest-700/20"></div>
@@ -142,7 +143,6 @@ export const ExperienceList: React.FC = () => {
                         const spreadIdx = i + 1;
                         return (
                           <div key={i} className={`page book-page ${currentPage > spreadIdx ? 'flipped' : ''}`} style={{ zIndex: getDesktopZIndex(spreadIdx) }} onClick={() => currentPage === spreadIdx && nextPage()}>
-                            {/* Left Page (Front) */}
                             <div className="page-front bg-earth-50 border-r border-earth-200 shadow-inner p-10 flex flex-col overflow-hidden">
                                {item1 && (
                                  <>
@@ -158,7 +158,6 @@ export const ExperienceList: React.FC = () => {
                                  </>
                                )}
                             </div>
-                            {/* Right Page (Back) */}
                             <div className="page-back bg-earth-50 border-l border-earth-200 shadow-inner p-10 flex flex-col overflow-hidden">
                                {item2 ? (
                                  <>
@@ -234,7 +233,6 @@ export const ExperienceList: React.FC = () => {
                         );
                       })}
                     </div>
-
                     <div className="absolute top-0 left-0 w-full h-4 z-[200] flex justify-around px-4">
                       {[1,2,3,4,5].map(i => (
                         <div key={i} className="w-2 h-5 bg-gradient-to-b from-earth-400 to-earth-600 rounded-full shadow-md -translate-y-3"></div>
@@ -244,141 +242,45 @@ export const ExperienceList: React.FC = () => {
                 </div>
               )}
 
-              {/* Navigation Controls */}
               <div className="mt-20 md:mt-24 w-full max-w-2xl flex justify-center items-center gap-4 md:gap-8 px-4">
-                 
-                 <button 
-                  onClick={goToFirst} 
-                  disabled={currentPage === 0 || isFlipping} 
-                  className="group flex flex-col items-center gap-2 text-earth-300 hover:text-forest-700 disabled:opacity-5 transition-all"
-                  title="First Page"
-                 >
+                 <button onClick={goToFirst} disabled={currentPage === 0 || isFlipping} className="group flex flex-col items-center gap-2 text-earth-300 hover:text-forest-700 disabled:opacity-5 transition-all" title="First Page">
                     <span className="text-[8px] tracking-widest uppercase font-bold opacity-0 group-hover:opacity-100 transition-opacity">Start</span>
-                    <div className="w-10 h-10 flex items-center justify-center rounded-full border border-current">
-                       <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
-                       </svg>
-                    </div>
+                    <div className="w-10 h-10 flex items-center justify-center rounded-full border border-current"><svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" /></svg></div>
                  </button>
-
                  <button onClick={prevPage} disabled={currentPage === 0 || isFlipping} className="group flex flex-col items-center gap-2 text-earth-400 hover:text-forest-700 disabled:opacity-10 transition-all">
                     <span className="text-[10px] tracking-widest uppercase font-bold">Prev</span>
-                    <div className="w-12 h-12 flex items-center justify-center rounded-full border border-current">
-                       <svg className={`w-4 h-4 ${isMobile ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMobile ? "M19 9l-7 7-7-7" : "M15 19l-7-7 7-7"} />
-                       </svg>
-                    </div>
+                    <div className="w-12 h-12 flex items-center justify-center rounded-full border border-current"><svg className={`w-4 h-4 ${isMobile ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMobile ? "M19 9l-7 7-7-7" : "M15 19l-7-7 7-7"} /></svg></div>
                  </button>
-
                  <div className="text-center min-w-[80px]">
                     <div className="text-earth-900 font-bold text-lg md:text-xl">{currentPage} / {totalPages - 1}</div>
                     <div className="text-[9px] text-earth-400 tracking-widest uppercase font-bold">{isMobile ? 'Entry' : 'Spread'}</div>
                  </div>
-
                  <button onClick={nextPage} disabled={currentPage === totalPages - 1 || isFlipping} className="group flex flex-col items-center gap-2 text-earth-400 hover:text-forest-700 disabled:opacity-10 transition-all">
                     <span className="text-[10px] tracking-widest uppercase font-bold">Next</span>
-                    <div className="w-12 h-12 flex items-center justify-center rounded-full border border-current">
-                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMobile ? "M19 9l-7 7-7-7" : "M9 5l7 7-7 7"} />
-                       </svg>
-                    </div>
+                    <div className="w-12 h-12 flex items-center justify-center rounded-full border border-current"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMobile ? "M19 9l-7 7-7-7" : "M9 5l7 7-7 7"} /></svg></div>
                  </button>
-
-                 <button 
-                  onClick={goToLast} 
-                  disabled={currentPage === totalPages - 1 || isFlipping} 
-                  className="group flex flex-col items-center gap-2 text-earth-300 hover:text-forest-700 disabled:opacity-5 transition-all"
-                  title="Last Page"
-                 >
+                 <button onClick={goToLast} disabled={currentPage === totalPages - 1 || isFlipping} className="group flex flex-col items-center gap-2 text-earth-300 hover:text-forest-700 disabled:opacity-5 transition-all" title="Last Page">
                     <span className="text-[8px] tracking-widest uppercase font-bold opacity-0 group-hover:opacity-100 transition-opacity">End</span>
-                    <div className="w-10 h-10 flex items-center justify-center rounded-full border border-current">
-                       <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
-                       </svg>
-                    </div>
+                    <div className="w-10 h-10 flex items-center justify-center rounded-full border border-current"><svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M13 5l7 7-7 7M5 5l7 7-7 7" /></svg></div>
                  </button>
               </div>
-
             </div>
           )}
-          
           <div className="mt-32 md:mt-48">
-             <button onClick={() => window.history.back()} className="text-[10px] font-black text-earth-400 hover:text-forest-600 transition-all uppercase tracking-[0.4em] flex items-center gap-3">
-                <span className="text-lg">←</span> Return to Home
-             </button>
+             <button onClick={() => window.history.back()} className="text-[10px] font-black text-earth-400 hover:text-forest-600 transition-all uppercase tracking-[0.4em] flex items-center gap-3"><span className="text-lg">←</span> Return to Home</button>
           </div>
         </div>
       </div>
-
       <style>{`
         .transform-style-3d { transform-style: preserve-3d; }
-        
-        .page {
-          position: absolute;
-          top: 0;
-          width: 100%;
-          height: 100%;
-          transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
-          transform-style: preserve-3d;
-          cursor: pointer;
-          -webkit-tap-highlight-color: transparent;
-        }
-
-        .page-front, .page-back {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          backface-visibility: hidden;
-          box-sizing: border-box;
-          background-image: url("https://www.transparenttextures.com/patterns/handmade-paper.png");
-        }
-
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: rgba(0,0,0,0.05);
-          border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #a89482;
-          border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: #725d4e;
-        }
-
-        @media (min-width: 768px) {
-          .book-container { perspective: 2500px; }
-          .book-page {
-            right: 0;
-            width: 50%;
-            transform-origin: left center;
-          }
-          .book-page.flipped {
-            transform: rotateY(-180deg);
-          }
-          .book-page .page-back {
-            transform: rotateY(180deg);
-          }
-        }
-
-        @media (max-width: 767px) {
-          .notebook-container { perspective: 2000px; }
-          .note-page {
-            left: 0;
-            transform-origin: top center;
-          }
-          .note-page.flipped {
-            transform: rotateX(155deg);
-          }
-          .note-page .page-back {
-            transform: rotateX(180deg);
-          }
-        }
-
+        .page { position: absolute; top: 0; width: 100%; height: 100%; transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1); transform-style: preserve-3d; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+        .page-front, .page-back { position: absolute; top: 0; left: 0; width: 100%; height: 100%; backface-visibility: hidden; box-sizing: border-box; background-image: url("https://www.transparenttextures.com/patterns/handmade-paper.png"); }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #a89482; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #725d4e; }
+        @media (min-width: 768px) { .book-container { perspective: 2500px; } .book-page { right: 0; width: 50%; transform-origin: left center; } .book-page.flipped { transform: rotateY(-180deg); } .book-page .page-back { transform: rotateY(180deg); } }
+        @media (max-width: 767px) { .notebook-container { perspective: 2000px; } .note-page { left: 0; transform-origin: top center; } .note-page.flipped { transform: rotateX(155deg); } .note-page .page-back { transform: rotateX(180deg); } }
         .page-front { box-shadow: inset 10px 0 30px rgba(0,0,0,0.02); }
         .page-back { box-shadow: inset -10px 0 30px rgba(0,0,0,0.02); }
         .page.flipped .page-back { box-shadow: 0 10px 30px rgba(0,0,0,0.1); }

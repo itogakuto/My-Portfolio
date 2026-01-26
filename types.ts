@@ -4,14 +4,15 @@ export type SkillCategory = 'Technology' | 'Design' | 'Other';
 export interface Topic {
   id: string;
   title: string;
-  slug: string; // Required as per DB schema
+  slug: string;
   category: Category;
   summary: string;
-  body?: string; // Markdown or plain text
+  body?: string;
   tags: string[];
   role?: string;
-  links?: any; // JSONB
+  links?: any;
   image_url?: string;
+  sort_order?: number; // Added
   created_at: string;
   updated_at?: string;
   status?: string;
@@ -24,6 +25,7 @@ export interface News {
   short_text?: string;
   body?: string;
   date?: string;
+  sort_order?: number; // Added
   status?: string;
   created_at: string;
 }
@@ -33,6 +35,7 @@ export interface Skill {
   category: SkillCategory;
   name: string;
   level: number;
+  sort_order?: number; // Added
 }
 
 export interface Experience {
@@ -42,6 +45,7 @@ export interface Experience {
   summary: string;
   body?: string;
   image_url?: string;
+  sort_order?: number; // Added
   created_at: string;
 }
 

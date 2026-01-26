@@ -62,9 +62,9 @@ export const Home: React.FC = () => {
         setHeroImages(images.map(img => img.image_url));
       }
 
-      const { data: topics } = await supabase.from('topics').select('*').limit(3);
+      const { data: topics } = await supabase.from('topics').select('*').order('sort_order', { ascending: true }).limit(3);
       const { data: news } = await supabase.from('news').select('*').order('created_at', { ascending: false }).limit(3);
-      const { data: skillsData } = await supabase.from('skills').select('*');
+      const { data: skillsData } = await supabase.from('skills').select('*').order('sort_order', { ascending: true });
 
       if (topics) setFeaturedTopics(topics);
       if (news) setLatestNews(news);
