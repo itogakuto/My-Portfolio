@@ -23,7 +23,7 @@ export const Home: React.FC = () => {
   const [heroImages, setHeroImages] = useState<string[]>([
     "images/hero-images/1.jpg",
     "images/hero-images/2.JPG",
-    "images/hero-images/3.png",
+    "images/hero-images/3.PNG",
     "images/hero-images/5.png",
     "images/hero-images/6.png",
     "images/hero-images/7.png"
