@@ -26,10 +26,10 @@ export const ExperienceList: React.FC = () => {
         setExperiences(data);
       } else {
         setExperiences([
-          { id: 'e1', title: '秘境でのソロキャンプ', slug: 'solo-camp', summary: '電気もガスもない環境で1週間過ごした記録。自然と向き合う中で得た、サバイバル技術と深い内省の記録。', created_at: new Date().toISOString() },
-          { id: 'e2', title: 'ビンテージカメラの修復', slug: 'camera-restore', summary: '1950年代の機械式カメラを分解・清掃。当時の技術者の魂を感じる時間。', created_at: new Date().toISOString() },
-          { id: 'e3', title: '古民家再生プロジェクト', slug: 'old-house', summary: '地域の方々と協力し、放置されていた空き家をコミュニティ拠点へ。継承される知恵と新しい息吹。', created_at: new Date().toISOString() },
-          { id: 'e4', title: 'ドローン空撮の旅', slug: 'drone-trip', summary: '日本の原風景を空から記録。鳥の視点で見つめ直す、愛すべき土地の物語。', created_at: new Date().toISOString() }
+          { id: 'e1', title: '秘境でのソロキャンプ', slug: 'solo-camp', summary: '電気もガスもない環境で1週間過ごした記録。自然と向き合う中で得た、サバイバル技術と深い内省の記録。', body: '詳細な記録：火起こしから食料の調達、野生動物との遭遇など、都市生活では味わえない「生」の感覚を研ぎ澄ませた時間でした。', created_at: new Date().toISOString() },
+          { id: 'e2', title: 'ビンテージカメラの修復', slug: 'camera-restore', summary: '1950年代の機械式カメラを分解・清掃。当時の技術者の魂を感じる時間。', body: '修復過程で、精密な歯車の組み合わせが織りなす工学の粋に触れました。道具を長く使うことの意義を再確認する経験となりました。', created_at: new Date().toISOString() },
+          { id: 'e3', title: '古民家再生プロジェクト', slug: 'old-house', summary: '地域の方々と協力し、放置されていた空き家をコミュニティ拠点へ。継承される知恵と新しい息吹。', body: '茅葺き屋根の補修や土壁の塗り直しなど、伝統的な建築手法を学びつつ、現代のニーズに合わせたリノベーションを行いました。', created_at: new Date().toISOString() },
+          { id: 'e4', title: 'ドローン空撮の旅', slug: 'drone-trip', summary: '日本の原風景を空から記録。鳥の視点で見つめ直す、愛すべき土地の物語。', body: '上空からの視点は、普段見ている景色を一変させ、地形や植生が織りなす模様の美しさを教えてくれました。', created_at: new Date().toISOString() }
         ]);
       }
       setLoading(false);
@@ -118,6 +118,7 @@ export const ExperienceList: React.FC = () => {
                     <div className="book relative w-full h-full transform-style-3d" style={{ transform: `translateX(${currentPage === 0 ? '-25%' : '0%'})`, transition: 'transform 1s ease' }}>
                       <div className="absolute inset-0 bg-earth-900/10 blur-xl rounded-full transform translate-y-10 scale-x-90 opacity-20 pointer-events-none"></div>
 
+                      {/* Cover Page */}
                       <div className={`page book-page ${currentPage > 0 ? 'flipped' : ''}`} style={{ zIndex: getDesktopZIndex(0) }} onClick={() => currentPage === 0 && nextPage()}>
                         <div className="page-front bg-forest-900 border-r-4 border-forest-800 rounded-r-xl shadow-2xl flex flex-col items-center justify-center p-12 overflow-hidden">
                            <div className="absolute inset-4 border border-forest-700/20"></div>
@@ -141,28 +142,36 @@ export const ExperienceList: React.FC = () => {
                         const spreadIdx = i + 1;
                         return (
                           <div key={i} className={`page book-page ${currentPage > spreadIdx ? 'flipped' : ''}`} style={{ zIndex: getDesktopZIndex(spreadIdx) }} onClick={() => currentPage === spreadIdx && nextPage()}>
-                            <div className="page-front bg-earth-50 border-r border-earth-200 shadow-inner p-10">
+                            {/* Left Page (Front) */}
+                            <div className="page-front bg-earth-50 border-r border-earth-200 shadow-inner p-10 flex flex-col overflow-hidden">
                                {item1 && (
-                                 <div className="h-full flex flex-col">
-                                    <div className="aspect-video mb-6 overflow-hidden rounded bg-earth-200">
+                                 <>
+                                    <div className="aspect-video mb-6 overflow-hidden rounded bg-earth-200 flex-shrink-0">
                                        <img src={resolveImageUrl(item1.image_url, item1.id)} className="w-full h-full object-cover filter sepia-[0.3]" alt="" />
                                     </div>
-                                    <h4 className="text-xl font-bold text-earth-900 mb-4 border-b border-earth-100 pb-2">{item1.title}</h4>
-                                    <p className="text-sm text-earth-700 leading-relaxed line-clamp-6">{item1.summary}</p>
-                                    <div className="mt-auto text-right text-[10px] font-mono text-earth-300 italic">Page. {i * 2 + 1}</div>
-                                 </div>
+                                    <h4 className="text-xl font-bold text-earth-900 mb-4 border-b border-earth-100 pb-2 flex-shrink-0">{item1.title}</h4>
+                                    <div className="flex-grow overflow-y-auto pr-4 custom-scrollbar">
+                                      <p className="text-sm text-earth-700 leading-relaxed mb-4">{item1.summary}</p>
+                                      {item1.body && <p className="text-sm text-earth-600 leading-relaxed border-t border-earth-100 pt-4 mt-4 italic">{item1.body}</p>}
+                                    </div>
+                                    <div className="mt-4 text-right text-[10px] font-mono text-earth-300 italic flex-shrink-0">Page. {i * 2 + 1}</div>
+                                 </>
                                )}
                             </div>
-                            <div className="page-back bg-earth-50 border-l border-earth-200 shadow-inner p-10">
+                            {/* Right Page (Back) */}
+                            <div className="page-back bg-earth-50 border-l border-earth-200 shadow-inner p-10 flex flex-col overflow-hidden">
                                {item2 ? (
-                                 <div className="h-full flex flex-col">
-                                    <div className="aspect-video mb-6 overflow-hidden rounded bg-earth-200">
+                                 <>
+                                    <div className="aspect-video mb-6 overflow-hidden rounded bg-earth-200 flex-shrink-0">
                                        <img src={resolveImageUrl(item2.image_url, item2.id)} className="w-full h-full object-cover filter sepia-[0.3]" alt="" />
                                     </div>
-                                    <h4 className="text-xl font-bold text-earth-900 mb-4 border-b border-earth-100 pb-2">{item2.title}</h4>
-                                    <p className="text-sm text-earth-700 leading-relaxed line-clamp-6">{item2.summary}</p>
-                                    <div className="mt-auto text-left text-[10px] font-mono text-earth-300 italic">Page. {i * 2 + 2}</div>
-                                 </div>
+                                    <h4 className="text-xl font-bold text-earth-900 mb-4 border-b border-earth-100 pb-2 flex-shrink-0">{item2.title}</h4>
+                                    <div className="flex-grow overflow-y-auto pr-4 custom-scrollbar">
+                                      <p className="text-sm text-earth-700 leading-relaxed mb-4">{item2.summary}</p>
+                                      {item2.body && <p className="text-sm text-earth-600 leading-relaxed border-t border-earth-100 pt-4 mt-4 italic">{item2.body}</p>}
+                                    </div>
+                                    <div className="mt-4 text-left text-[10px] font-mono text-earth-300 italic flex-shrink-0">Page. {i * 2 + 2}</div>
+                                 </>
                                ) : (
                                  <div className="h-full flex flex-col items-center justify-center opacity-20 italic">
                                     <div className="w-12 h-px bg-earth-300 mb-6"></div>
@@ -206,15 +215,18 @@ export const ExperienceList: React.FC = () => {
                         const isFlipped = currentPage > pageIdx;
                         return (
                           <div key={exp.id} className={`page note-page ${isFlipped ? 'flipped' : ''}`} style={{ zIndex: getMobileZIndex(pageIdx) }} onClick={() => currentPage === pageIdx && nextPage()}>
-                             <div className="page-front bg-earth-50 border-x border-b border-earth-200 shadow-md p-5 flex flex-col">
-                                <div className="aspect-[16/10] mb-4 overflow-hidden rounded bg-earth-200">
+                             <div className="page-front bg-earth-50 border-x border-b border-earth-200 shadow-md p-5 flex flex-col overflow-hidden">
+                                <div className="aspect-[16/10] mb-4 overflow-hidden rounded bg-earth-200 flex-shrink-0">
                                    <img src={resolveImageUrl(exp.image_url, exp.id)} className="w-full h-full object-cover filter sepia-[0.3]" alt="" />
                                 </div>
-                                <h4 className="text-lg font-bold text-earth-900 mb-2 border-b border-earth-100 pb-1">{exp.title}</h4>
-                                <p className="text-xs text-earth-700 leading-relaxed line-clamp-6">{exp.summary}</p>
+                                <h4 className="text-lg font-bold text-earth-900 mb-2 border-b border-earth-100 pb-1 flex-shrink-0">{exp.title}</h4>
+                                <div className="flex-grow overflow-y-auto pr-2 custom-scrollbar">
+                                  <p className="text-xs text-earth-700 leading-relaxed mb-4">{exp.summary}</p>
+                                  {exp.body && <p className="text-[10px] text-earth-500 italic mt-2 border-t border-earth-100 pt-2">{exp.body}</p>}
+                                </div>
                              </div>
-                             <div className="page-back bg-earth-100 rounded-t-xl p-6 shadow-inner border-x border-t border-earth-200">
-                                <div className="h-full flex items-center justify-center text-center italic text-earth-500 text-[10px] leading-relaxed">
+                             <div className="page-back bg-earth-100 rounded-t-xl p-6 shadow-inner border-x border-t border-earth-200 overflow-hidden flex flex-col">
+                                <div className="flex-grow overflow-y-auto pr-2 custom-scrollbar text-center flex flex-col justify-center italic text-earth-500 text-[10px] leading-relaxed">
                                    {exp.body || "この経験が未来への道標となります。"}
                                 </div>
                              </div>
@@ -235,7 +247,6 @@ export const ExperienceList: React.FC = () => {
               {/* Navigation Controls */}
               <div className="mt-20 md:mt-24 w-full max-w-2xl flex justify-center items-center gap-4 md:gap-8 px-4">
                  
-                 {/* Jump to First */}
                  <button 
                   onClick={goToFirst} 
                   disabled={currentPage === 0 || isFlipping} 
@@ -273,7 +284,6 @@ export const ExperienceList: React.FC = () => {
                     </div>
                  </button>
 
-                 {/* Jump to Last */}
                  <button 
                   onClick={goToLast} 
                   disabled={currentPage === totalPages - 1 || isFlipping} 
@@ -323,6 +333,21 @@ export const ExperienceList: React.FC = () => {
           backface-visibility: hidden;
           box-sizing: border-box;
           background-image: url("https://www.transparenttextures.com/patterns/handmade-paper.png");
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(0,0,0,0.05);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #a89482;
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #725d4e;
         }
 
         @media (min-width: 768px) {
