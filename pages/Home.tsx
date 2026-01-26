@@ -406,7 +406,7 @@ export const Home: React.FC = () => {
                                 name="user_name" 
                                 required 
                                 className="w-full px-4 py-3.5 rounded-lg border border-earth-100 bg-earth-50/50 focus:bg-white focus:ring-2 focus:ring-forest-500/20 focus:border-forest-500 outline-none transition-all" 
-                                placeholder="Gakuto Ito"
+                                placeholder="サンプル 太郎"
                               />
                           </div>
                           <div>
