@@ -29,7 +29,7 @@ export const Home: React.FC = () => {
   const [sending, setSending] = useState(false);
   const [sentStatus, setSentStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
-  const skillCategories: SkillCategory[] = ['Technology', 'Design', 'Entrepreneurship'];
+  const skillCategories: SkillCategory[] = ['Technology', 'Design', 'Other'];
 
   // タブの位置と幅を計算する関数
   const updateIndicator = () => {
@@ -108,8 +108,8 @@ export const Home: React.FC = () => {
       desc: '単なる美しさだけでなく、ユーザー体験（UX）に基づいた設計を心がけています。狩猟現場での使いやすさや、情報の伝わりやすさをエンジニアリングの視点と融合させています。',
       levels: ["5 - Super", "4 - Always", "3 - Often", "2 - Sometimes", "1 - Beginner"]
     },
-    'Entrepreneurship': {
-      title: 'Entrepreneurship',
+    'Other': {
+      title: 'Other',
       color: '#fbbf24',
       desc: 'フィールドワークを通じて課題の本質を捉え、それを解決するためのビジネスモデルや戦略を立案します。地域社会とのコミュニケーションを大切にし、持続可能な産業構造の構築を目指します。',
       levels: ["5 - Super", "4 - Always", "3 - Often", "2 - Sometimes", "1 - Beginner"]
