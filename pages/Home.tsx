@@ -25,6 +25,7 @@ export const Home: React.FC = () => {
     "images/hero-images/2.JPG",
     "images/hero-images/3.png",
     "images/hero-images/5.png",
+    "images/hero-images/6.png",
     "images/hero-images/7.png"
   ]);
   const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
