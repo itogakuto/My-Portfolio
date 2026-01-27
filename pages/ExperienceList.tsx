@@ -73,7 +73,7 @@ export const ExperienceList: React.FC = () => {
   }, [experiences]);
 
   const totalSpreadsDesktop = Math.ceil(experiences.length / 2) + 1;
-  const totalPages = isMobile ? mobilePages.length : totalSpreadsDesktop;
+  const totalPages = (isMobile ? mobilePages.length : totalSpreadsDesktop) + 1;
 
   const nextPage = () => {
     if (currentPage < totalPages - 1 && !isFlipping) {
@@ -210,6 +210,12 @@ export const ExperienceList: React.FC = () => {
                                     </div>
                                     <div className="mt-4 text-right text-[10px] font-mono text-earth-300 italic flex-shrink-0">Page. {i * 2 + 1}</div>
                                  </>
+                               )}
+                               {!item1 && (
+                                 <div className="h-full flex flex-col items-center justify-center opacity-20 italic">
+                                    <div className="w-12 h-px bg-earth-300 mb-6"></div>
+                                    <p className="text-xs uppercase tracking-widest">Finis</p>
+                                 </div>
                                )}
                             </div>
                             <div className="page-back bg-earth-50 border-l border-earth-200 shadow-inner p-10 flex flex-col overflow-hidden">
