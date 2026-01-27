@@ -82,15 +82,15 @@ export const ExperienceList: React.FC = () => {
   }, [isMobile, totalPages]);
 
   const getDesktopZIndex = (spreadIdx: number) => {
-    if (spreadIdx < currentPage) return spreadIdx;
-    if (spreadIdx === currentPage) return 100;
-    return totalPages - spreadIdx;
+    if (spreadIdx < currentPage) return spreadIdx + 10;
+    if (spreadIdx === currentPage) return 200;
+    return (totalPages - spreadIdx) + 50;
   };
 
   const getMobileZIndex = (pageIdx: number) => {
-    if (pageIdx < currentPage) return pageIdx;
-    if (pageIdx === currentPage) return 100;
-    return totalPages - pageIdx;
+    if (pageIdx < currentPage) return pageIdx + 10;
+    if (pageIdx === currentPage) return 200;
+    return (totalPages - pageIdx) + 50;
   };
 
   return (
@@ -120,7 +120,15 @@ export const ExperienceList: React.FC = () => {
                     <div className="book relative w-full h-full transform-style-3d" style={{ transform: `translateX(${currentPage === 0 ? '-25%' : '0%'})`, transition: 'transform 1s ease' }}>
                       <div className="absolute inset-0 bg-earth-900/10 blur-xl rounded-full transform translate-y-10 scale-x-90 opacity-20 pointer-events-none"></div>
 
-                      <div className={`page book-page ${currentPage > 0 ? 'flipped' : ''}`} style={{ zIndex: getDesktopZIndex(0) }} onClick={() => currentPage === 0 && nextPage()}>
+                      <div 
+                        className="page book-page" 
+                        style={{ 
+                          zIndex: getDesktopZIndex(0),
+                          transform: currentPage > 0 ? 'rotateY(-180deg)' : 'none',
+                          WebkitTransform: currentPage > 0 ? 'rotateY(-180deg)' : 'none'
+                        }} 
+                        onClick={() => currentPage === 0 && nextPage()}
+                      >
                         <div className="page-front bg-forest-900 border-r-4 border-forest-800 rounded-r-xl shadow-2xl flex flex-col items-center justify-center p-12 overflow-hidden">
                            <div className="absolute inset-4 border border-forest-700/20"></div>
                            <div className="relative z-10 flex flex-col items-center text-center">
@@ -146,7 +154,16 @@ export const ExperienceList: React.FC = () => {
                         const item2 = experiences[i * 2 + 1];
                         const spreadIdx = i + 1;
                         return (
-                          <div key={i} className={`page book-page ${currentPage > spreadIdx ? 'flipped' : ''}`} style={{ zIndex: getDesktopZIndex(spreadIdx) }} onClick={() => currentPage === spreadIdx && nextPage()}>
+                          <div 
+                            key={i} 
+                            className="page book-page" 
+                            style={{ 
+                              zIndex: getDesktopZIndex(spreadIdx),
+                              transform: currentPage > spreadIdx ? 'rotateY(-180deg)' : 'none',
+                              WebkitTransform: currentPage > spreadIdx ? 'rotateY(-180deg)' : 'none'
+                            }} 
+                            onClick={() => currentPage === spreadIdx && nextPage()}
+                          >
                             <div className="page-front bg-earth-50 border-r border-earth-200 shadow-inner p-10 flex flex-col overflow-hidden">
                                {item1 && (
                                  <>
@@ -200,7 +217,15 @@ export const ExperienceList: React.FC = () => {
                     </div>
 
                     <div className="notebook relative w-full h-full transform-style-3d">
-                      <div className={`page note-page ${currentPage > 0 ? 'flipped' : ''}`} style={{ zIndex: getMobileZIndex(0) }} onClick={() => currentPage === 0 && nextPage()}>
+                      <div 
+                        className="page note-page" 
+                        style={{ 
+                          zIndex: getMobileZIndex(0),
+                          transform: currentPage > 0 ? 'rotateX(155deg)' : 'none',
+                          WebkitTransform: currentPage > 0 ? 'rotateX(155deg)' : 'none'
+                        }} 
+                        onClick={() => currentPage === 0 && nextPage()}
+                      >
                          <div className="page-front bg-forest-900 border-x-2 border-b-2 border-forest-800 rounded-b-xl shadow-2xl flex flex-col items-center justify-center p-6 text-center">
                             <img className="w-60 h-auto mb-6" src="/images/book-image/takibi.png" alt="takibi Line Art" />
                             <h2 className="text-2xl font-bold text-earth-100 mb-2">My Experiences</h2>
@@ -222,7 +247,16 @@ export const ExperienceList: React.FC = () => {
                         const pageIdx = i + 1;
                         const isFlipped = currentPage > pageIdx;
                         return (
-                          <div key={exp.id} className={`page note-page ${isFlipped ? 'flipped' : ''}`} style={{ zIndex: getMobileZIndex(pageIdx) }} onClick={() => currentPage === pageIdx && nextPage()}>
+                          <div 
+                            key={exp.id} 
+                            className="page note-page" 
+                            style={{ 
+                              zIndex: getMobileZIndex(pageIdx),
+                              transform: isFlipped ? 'rotateX(155deg)' : 'none',
+                              WebkitTransform: isFlipped ? 'rotateX(155deg)' : 'none'
+                            }} 
+                            onClick={() => currentPage === pageIdx && nextPage()}
+                          >
                              <div className="page-front bg-earth-50 border-x border-b border-earth-200 shadow-md p-5 flex flex-col overflow-hidden">
                                 <div className="aspect-[16/10] mb-4 overflow-hidden rounded bg-earth-200 flex-shrink-0">
                                    <img src={resolveImageUrl(exp.image_url, exp.id)} className="w-full h-full object-cover filter sepia-[0.3]" alt="" />
@@ -281,18 +315,77 @@ export const ExperienceList: React.FC = () => {
         </div>
       </div>
       <style>{`
-        .transform-style-3d { transform-style: preserve-3d; }
-        .page { position: absolute; top: 0; width: 100%; height: 100%; transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1); transform-style: preserve-3d; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-        .page-front, .page-back { position: absolute; top: 0; left: 0; width: 100%; height: 100%; backface-visibility: hidden; box-sizing: border-box; background-image: url("https://www.transparenttextures.com/patterns/handmade-paper.png"); }
+        .transform-style-3d { 
+          transform-style: preserve-3d; 
+          -webkit-transform-style: preserve-3d; 
+        }
+        .page { 
+          position: absolute; 
+          top: 0; 
+          width: 100%; 
+          height: 100%; 
+          transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1); 
+          transform-style: preserve-3d; 
+          -webkit-transform-style: preserve-3d;
+          cursor: pointer; 
+          -webkit-tap-highlight-color: transparent;
+          will-change: transform;
+          -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+        }
+        .page-front, .page-back { 
+          position: absolute; 
+          top: 0; 
+          left: 0; 
+          width: 100%; 
+          height: 100%; 
+          backface-visibility: hidden; 
+          -webkit-backface-visibility: hidden;
+          box-sizing: border-box; 
+          background-image: url("https://www.transparenttextures.com/patterns/handmade-paper.png");
+          -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+        }
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #a89482; border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #725d4e; }
-        @media (min-width: 768px) { .book-container { perspective: 2500px; } .book-page { right: 0; width: 50%; transform-origin: left center; } .book-page.flipped { transform: rotateY(-180deg); } .book-page .page-back { transform: rotateY(180deg); } }
-        @media (max-width: 767px) { .notebook-container { perspective: 2000px; } .note-page { left: 0; transform-origin: top center; } .note-page.flipped { transform: rotateX(155deg); } .note-page .page-back { transform: rotateX(180deg); } }
-        .page-front { box-shadow: inset 10px 0 30px rgba(0,0,0,0.02); }
-        .page-back { box-shadow: inset -10px 0 30px rgba(0,0,0,0.02); }
-        .page.flipped .page-back { box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        @media (min-width: 768px) { 
+          .book-container { 
+            perspective: 2500px; 
+            -webkit-perspective: 2500px;
+            -webkit-perspective-origin: center center;
+            perspective-origin: center center;
+          } 
+          .book-page { 
+            right: 0; 
+            width: 50%; 
+            transform-origin: left center; 
+            -webkit-transform-origin: left center;
+          } 
+        }
+        @media (max-width: 767px) { 
+          .notebook-container { 
+            perspective: 2000px; 
+            -webkit-perspective: 2000px;
+            -webkit-perspective-origin: center top;
+            perspective-origin: center top;
+          } 
+          .note-page { 
+            left: 0; 
+            transform-origin: top center; 
+            -webkit-transform-origin: top center;
+          } 
+        }
+        .page-front { 
+          box-shadow: inset 10px 0 30px rgba(0,0,0,0.02); 
+        }
+        .page-back { 
+          box-shadow: inset -10px 0 30px rgba(0,0,0,0.02); 
+        }
+        .page.flipped .page-back { 
+          box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+        }
       `}</style>
     </Layout>
   );
