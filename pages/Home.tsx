@@ -392,7 +392,7 @@ export const Home: React.FC = () => {
             <p className="text-earth-500 mb-10 max-w-lg mx-auto leading-loose text-sm italic">
               多様な体験を享受し、多様な価値観、世界に出会うこと。<br />
               それは、自ら現場の課題を発見し、現場に寄り添ったサービスの実装を行うための基盤であると考えています。<br />
-              ここでは、これまでに得た多様な経験をまとめています。下記ボタンからご覧ください。
+              ここでは、これまでに得た多様な経験をまとめています。
             </p>
             
             <Link 
