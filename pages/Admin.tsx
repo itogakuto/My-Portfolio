@@ -353,7 +353,7 @@ export const Admin: React.FC = () => {
                             <div><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">サマリー</label><textarea required className="w-full border p-2 rounded" rows={2} value={topicForm.summary || ''} onChange={e=>setTopicForm({...topicForm, summary: e.target.value})} /></div>
                             <div><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">本文</label><textarea className="w-full border p-2 rounded font-mono text-sm" rows={10} value={topicForm.body || ''} onChange={e=>setTopicForm({...topicForm, body: e.target.value})} /></div>
                             <div>
-                                <label className="block text-xs font-bold text-earth-500 mb-1 uppercase">プロジェクト画像</label>
+                                <label className="block text-xs font-bold text-earth-500 mb-1 uppercase">プロジェクト画像（ファイルサイズ50MB未満）</label>
                                 <div className="mt-2 flex items-start gap-4">
                                     <input type="file" accept="image/*" onChange={handleFileChange} className="block text-sm text-earth-500 file:bg-forest-50 file:text-forest-700" />
                                     {uploadPreview && <div className="w-32 h-20 rounded border overflow-hidden"><img src={uploadPreview} className="w-full h-full object-cover" /></div>}
@@ -396,7 +396,7 @@ export const Admin: React.FC = () => {
                             <div><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">サマリー</label><textarea required className="w-full border p-2 rounded" rows={2} value={expForm.summary || ''} onChange={e=>setExpForm({...expForm, summary: e.target.value})} /></div>
                             <div><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">詳細内容</label><textarea className="w-full border p-2 rounded" rows={6} value={expForm.body || ''} onChange={e=>setExpForm({...expForm, body: e.target.value})} /></div>
                             <div>
-                                <label className="block text-xs font-bold text-earth-500 mb-1 uppercase">体験の画像</label>
+                                <label className="block text-xs font-bold text-earth-500 mb-1 uppercase">体験の画像（ファイルサイズ50MB未満）</label>
                                 <div className="mt-2 flex items-start gap-4">
                                     <input type="file" accept="image/*" onChange={handleFileChange} className="block text-sm text-earth-500" />
                                     {uploadPreview && <div className="w-32 h-20 rounded border overflow-hidden"><img src={uploadPreview} className="w-full h-full object-cover" /></div>}
