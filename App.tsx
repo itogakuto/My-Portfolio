@@ -27,7 +27,7 @@ const RouteChangeTracker: React.FC<{ children: React.ReactNode }> = ({ children 
   useEffect(() => {
     // パスが変わった時だけ遷移ローディングを出す
     if (prevPath !== location.pathname) {
-      // 管理画面（/admin）への移動はローディングを出さない、などの制御も可能
+      // 管理画面（/admin）への移動はローディングを出さない（更新時のUX考慮）
       if (!location.pathname.startsWith('/admin') && !prevPath.startsWith('/admin')) {
         setIsNavigating(true);
       }
@@ -49,6 +49,7 @@ const RouteChangeTracker: React.FC<{ children: React.ReactNode }> = ({ children 
   );
 };
 
+//ルーティング設定
 const App: React.FC = () => {
   return (
     <Router>
