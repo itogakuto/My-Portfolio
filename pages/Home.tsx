@@ -390,8 +390,9 @@ export const Home: React.FC = () => {
         <div className="max-w-4xl mx-auto px-6 text-center">
             <h2 className="text-3xl font-bold serif text-earth-900 mb-6">My Experiences</h2>
             <p className="text-earth-500 mb-10 max-w-lg mx-auto leading-loose text-sm italic">
-              世界を楽しみ、学び、大きくなること。それは、僕の活動のテーマの一つです。<br />
-              これまでに得た多様な経験をまとめています。下記ボタンからご覧ください。
+              多様な体験を享受し、多様な価値観、世界に出会うこと。<br />
+              それは、自ら現場の課題を発見し、現場に寄り添ったサービスの実装を行うための基盤であると考えています。<br />
+              ここでは、これまでに得た多様な経験をまとめています。下記ボタンからご覧ください。
             </p>
             
             <Link 
