@@ -330,8 +330,6 @@ export const ExperienceList: React.FC = () => {
           cursor: pointer; 
           -webkit-tap-highlight-color: transparent;
           will-change: transform;
-          -webkit-backface-visibility: hidden;
-          backface-visibility: hidden;
         }
         .page-front, .page-back { 
           position: absolute; 
@@ -363,6 +361,10 @@ export const ExperienceList: React.FC = () => {
             transform-origin: left center; 
             -webkit-transform-origin: left center;
           } 
+          .book-page .page-back { 
+            transform: rotateY(180deg) translateZ(0);
+            -webkit-transform: rotateY(180deg) translateZ(0);
+          }
         }
         @media (max-width: 767px) { 
           .notebook-container { 
@@ -376,6 +378,10 @@ export const ExperienceList: React.FC = () => {
             transform-origin: top center; 
             -webkit-transform-origin: top center;
           } 
+          .note-page .page-back { 
+            transform: rotateX(180deg) translateZ(0);
+            -webkit-transform: rotateX(180deg) translateZ(0);
+          }
         }
         .page-front { 
           box-shadow: inset 10px 0 30px rgba(0,0,0,0.02); 
