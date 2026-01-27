@@ -17,6 +17,8 @@ export const Home: React.FC = () => {
   const [activeSkillTab, setActiveSkillTab] = useState<SkillCategory>('Technology');
   const [contactToEmail, setContactToEmail] = useState<string | null>(null);
   const [contactTemplateKey, setContactTemplateKey] = useState<'main' | 'sub'>('main');
+  const [profileExpanded, setProfileExpanded] = useState(false);
+  const [purposeExpanded, setPurposeExpanded] = useState(false);
 
   // インジケーターの動的スタイル管理
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -156,10 +158,11 @@ export const Home: React.FC = () => {
           <div className="max-w-5xl mx-auto px-6 text-center text-white">
             <p className="text-forest-200 font-bold tracking-widest mb-6 uppercase text-sm animate-fadeIn">Field x Technology × Business</p>
             <h1 className="text-4xl md:text-7xl font-semibold serif mb-6 leading-tight text-white drop-shadow-md animate-fadeIn" style={{ animationDelay: '0.2s' }}>
-              現場に最も近い技術者へ
+              <span className="block md:inline">現場に最も近い</span>
+              <span className="block md:inline">技術者へ</span>
             </h1>
             <p className="text-earth-200 max-w-3xl mx-auto mb-8 leading-relaxed text-lg animate-fadeIn" style={{ animationDelay: '0.4s' }}>
-              現場×テクノロジー×ビジネスで課題を解決するエンジニア/コンサルタントを目指して。
+              <span className="block md:inline">現場×テクノロジー×ビジネスで課題を</span><span className="block md:inline">解決するエンジニア/コンサルタントを</span><span className="block md:inline">目指して。</span>
             </p>
           </div>
         </div>
@@ -179,7 +182,7 @@ export const Home: React.FC = () => {
                 <div className="w-full md:w-2/3">
                     <h3 className="text-3xl font-bold serif text-earth-900 mb-2">伊藤 楽大 <span className="text-xl font-sans font-normal text-earth-500 ml-2">Ito Gakuto</span></h3>
                     <p className="text-forest-700 font-bold mb-6 text-lg">静岡県浜松市出身 徳島県在住<br />神山まるごと高等専門学校 デザイン・エンジニアリング学科</p>
-                    <div className="prose prose-earth text-earth-700 leading-loose">
+                    <div className={`prose prose-earth text-earth-700 leading-loose ${profileExpanded ? '' : 'line-clamp-3 md:line-clamp-none'}`}>
                         <p>
                           情報工学を専門とし、web開発やアプリ開発を中心に据え、新規事業開発や主催イベントの開催など、幅広く活動を行ってきました。 いずれの活動においても主体性を発揮し、それぞれの理想的な結果の実現に貢献してきました。 また、農業や狩猟などに関する好奇心が強く、多分野を横断した多角的な思考および現場の声に則したソリューションを提案するエンジニア・コンサルタントを目指しています。
                         </p>
@@ -190,6 +193,15 @@ export const Home: React.FC = () => {
                         <p><br />
                           今後、企業様へのインターンシップや進学後の研究活動等において、さらなる技術力/ビジネススキル等の向上を目指し、多分野に知見を持つ技術的素養を持った人材として、現場主体の課題解決を通じて社会に貢献していきたいと考えています。
                         </p>
+                    </div>
+                    <div className="mt-4 md:hidden">
+                      <button
+                        type="button"
+                        onClick={() => setProfileExpanded(prev => !prev)}
+                        className="text-[10px] font-black serif text-earth-400 hover:text-forest-600 transition-all uppercase tracking-[0.3em]"
+                      >
+                        {profileExpanded ? '閉じる↓' : '続きを読む↑'}
+                      </button>
                     </div>
                 </div>
             </div>
@@ -204,10 +216,11 @@ export const Home: React.FC = () => {
           
           <div className="mt-12">
             <h3 className="text-2xl md:text-4xl font-bold serif text-earth-900 mb-10 leading-relaxed text-center md:text-left">
-              あなたの世界をより楽しくより大きく<br /><br />
+              <span className="block md:inline -translate-x-16 md:translate-x-0">あなたの世界を</span>
+              <span className="block md:inline translate-x-6 md:translate-x-0">より楽しくより大きく</span><br /><br />
             </h3>
             
-            <div className="prose prose-lg prose-earth text-earth-700 leading-loose space-y-8 max-w-3xl">
+            <div className={`prose prose-lg prose-earth text-earth-700 leading-loose space-y-8 max-w-3xl ${purposeExpanded ? '' : 'line-clamp-3 md:line-clamp-none'}`}>
               <p>
                 今ある世界はきっと楽しい。<br />
                 今ある世界はきっと私たちに成長をもたらしてくれる。<br />
@@ -224,6 +237,15 @@ export const Home: React.FC = () => {
                 私にしかできないスピードで、方法で、問題解決のためのソリューションを提案すること。<br />
                 それが私の目指すエンジニア/コンサルタントの姿です。<br />
               </p>
+            </div>
+            <div className="mt-6 md:hidden">
+              <button
+                type="button"
+                onClick={() => setPurposeExpanded(prev => !prev)}
+                className="text-[10px] font-black serif text-earth-400 hover:text-forest-600 transition-all uppercase tracking-[0.3em]"
+              >
+                {purposeExpanded ? '閉じる↓' : '続きを読む↑'}
+              </button>
             </div>
           </div>
         </div>
@@ -408,9 +430,9 @@ export const Home: React.FC = () => {
         <div className="max-w-4xl mx-auto px-6 text-center">
             <h2 className="text-3xl font-bold serif text-earth-900 mb-6">My Experiences</h2>
             <p className="text-earth-500 mb-10 max-w-lg mx-auto leading-loose text-sm italic">
-              多様な体験を享受し、多様な価値観、世界に出会うこと。<br />
+              多様な体験を享受し、多様な価値観に出会うこと。<br />
               それは、自ら現場の課題を発見し、現場に寄り添ったサービスの実装を行うための基盤であると考えています。<br />
-              ここでは、これまでに得た多様な経験をまとめています。
+              ここでは今まで得た多様な経験をまとめています。
             </p>
             
             <Link 

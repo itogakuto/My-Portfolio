@@ -100,6 +100,14 @@ export const TopicsList: React.FC = () => {
               )}
             </>
           )}
+          <div className="mt-32 md:mt-48 text-center">
+            <button
+              onClick={() => window.history.back()}
+              className="text-[10px] font-black serif text-earth-400 hover:text-forest-600 transition-all uppercase tracking-[0.4em] inline-flex items-center gap-3 mx-auto"
+            >
+              <span className="text-lg">←</span> Return to Home
+            </button>
+          </div>
         </div>
       </div>
     </Layout>

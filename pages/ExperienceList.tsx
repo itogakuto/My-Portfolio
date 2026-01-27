@@ -12,6 +12,7 @@ export const ExperienceList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0); 
   const [isFlipping, setIsFlipping] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [mobilePages, setMobilePages] = useState<{ kind: 'intro' | 'exp'; exp?: Experience; text?: string; showImage?: boolean; }[]>([]);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -39,9 +40,40 @@ export const ExperienceList: React.FC = () => {
     fetchExperiences();
   }, []);
 
+  useEffect(() => {
+    const splitByLength = (text: string, firstLimit: number, nextLimit: number) => {
+      const chunks: string[] = [];
+      let remaining = text.trim();
+      if (remaining.length === 0) return chunks;
+      const firstChunk = remaining.slice(0, firstLimit);
+      chunks.push(firstChunk);
+      remaining = remaining.slice(firstChunk.length).trim();
+      while (remaining.length > 0) {
+        const chunk = remaining.slice(0, nextLimit);
+        chunks.push(chunk);
+        remaining = remaining.slice(chunk.length).trim();
+      }
+      return chunks;
+    };
+
+    const pages: { kind: 'intro' | 'exp'; exp?: Experience; text?: string; showImage?: boolean; }[] = [{ kind: 'intro' }];
+    experiences.forEach((exp) => {
+      const combinedText = [exp.summary, exp.body].filter(Boolean).join('\n\n');
+      const chunks = splitByLength(combinedText, 200, 360);
+      if (chunks.length === 0) {
+        pages.push({ kind: 'exp', exp, text: '', showImage: true });
+        return;
+      }
+      pages.push({ kind: 'exp', exp, text: chunks[0], showImage: true });
+      for (let i = 1; i < chunks.length; i += 1) {
+        pages.push({ kind: 'exp', exp, text: chunks[i], showImage: false });
+      }
+    });
+    setMobilePages(pages);
+  }, [experiences]);
+
   const totalSpreadsDesktop = Math.ceil(experiences.length / 2) + 1;
-  const totalSpreadsMobile = experiences.length + 1;
-  const totalPages = isMobile ? totalSpreadsMobile : totalSpreadsDesktop;
+  const totalPages = isMobile ? mobilePages.length : totalSpreadsDesktop;
 
   const nextPage = () => {
     if (currentPage < totalPages - 1 && !isFlipping) {
@@ -245,12 +277,16 @@ export const ExperienceList: React.FC = () => {
                          </div>
                       </div>
 
-                      {experiences.map((exp, i) => {
-                        const pageIdx = i + 1;
+                      {mobilePages.map((page, i) => {
+                        if (page.kind === 'intro') return null;
+                        const pageIdx = i;
                         const isFlipped = currentPage > pageIdx;
+                        const exp = page.exp as Experience;
+                        const text = page.text || '';
+                        const showImage = !!page.showImage;
                         return (
                           <div 
-                            key={exp.id} 
+                            key={`${exp.id}-${pageIdx}`} 
                             className="page note-page" 
                             style={{ 
                               zIndex: getMobileZIndex(pageIdx),
@@ -260,18 +296,23 @@ export const ExperienceList: React.FC = () => {
                             onClick={() => currentPage === pageIdx && nextPage()}
                           >
                              <div className="page-front bg-earth-50 border-x border-b border-earth-200 shadow-md p-5 flex flex-col overflow-hidden">
-                                <div className="aspect-[16/10] mb-4 overflow-hidden rounded bg-earth-200 flex-shrink-0">
-                                   <img src={resolveImageUrl(exp.image_url, exp.id)} className="w-full h-full object-cover filter sepia-[0.3]" alt="" />
-                                </div>
-                                <h4 className="text-lg font-bold text-earth-900 mb-2 border-b border-earth-100 pb-1 flex-shrink-0">{exp.title}</h4>
-                                <div className="flex-grow overflow-y-auto pr-2 custom-scrollbar">
-                                  <p className="text-xs text-earth-700 leading-relaxed mb-4">{exp.summary}</p>
-                                  {exp.body && <p className="text-[10px] text-earth-500 italic mt-2 border-t border-earth-100 pt-2">{exp.body}</p>}
+                                {showImage && (
+                                  <div className="aspect-[16/10] mb-4 overflow-hidden rounded bg-earth-200 flex-shrink-0">
+                                     <img src={resolveImageUrl(exp.image_url, exp.id)} className="w-full h-full object-cover filter sepia-[0.3]" alt="" />
+                                  </div>
+                                )}
+                                <h4 className="text-lg font-bold text-earth-900 mb-2 border-b border-earth-100 pb-1 flex-shrink-0">
+                                  {exp.title}
+                                </h4>
+                                <div className="flex-grow overflow-hidden">
+                                  <p className={`text-xs text-earth-700 leading-relaxed ${showImage ? 'mb-2' : ''}`}>
+                                    {text}
+                                  </p>
                                 </div>
                              </div>
                              <div className="page-back bg-earth-100 rounded-t-xl p-6 shadow-inner border-x border-t border-earth-200 overflow-hidden flex flex-col">
-                                <div className="flex-grow overflow-y-auto pr-2 custom-scrollbar text-center flex flex-col justify-center italic text-earth-500 text-[10px] leading-relaxed">
-                                   {exp.body || "この経験が未来への道標となります。"}
+                                <div className="flex-grow text-center flex flex-col justify-center italic text-earth-500 text-[10px] leading-relaxed">
+                                   {showImage ? "Swipe to continue →" : "Next →"}
                                 </div>
                              </div>
                           </div>
