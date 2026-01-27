@@ -100,7 +100,7 @@ export const TopicDetail: React.FC = () => {
               )}
 
               <div className="prose prose-earth max-w-none text-earth-700 leading-relaxed space-y-6">
-                <p className="text-xl text-earth-500 font-medium border-b border-earth-100 pb-6 italic">
+                <p className="text-xl text-earth-500 font-medium border-b border-earth-100 pb-6">
                   {topic.summary}
                 </p>
                 
