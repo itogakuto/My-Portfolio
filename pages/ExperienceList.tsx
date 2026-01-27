@@ -131,10 +131,12 @@ export const ExperienceList: React.FC = () => {
                         </div>
                         <div className="page-back bg-earth-50 rounded-l-xl p-12 shadow-inner border-r border-earth-200">
                            <div className="h-full border border-earth-200/50 p-8 flex flex-col items-center justify-center text-center italic text-earth-600 text-sm leading-relaxed">
-                              現場のリアル、私のこれまでの体験の全ては、<br />
-                              これらは私の視座を形成する重要なピースです。<br />
-                              私の身に起きる全ての経験が、私自身をより豊かに、<br />
-                              楽しく、より大きく成長させてくれると信じています。
+                              私のこれまでの体験の全ては、<br />
+                              私の視座を形成する重要なピースです。<br />
+                              私の身に起きる全ての経験が、<br />
+                              自身をより豊かに、面白く、<br />
+                              より大きく成長させてくれると<br />
+                              信じています。
                            </div>
                         </div>
                       </div>
@@ -206,10 +208,12 @@ export const ExperienceList: React.FC = () => {
                          </div>
                          <div className="page-back bg-earth-100 rounded-t-xl p-8 shadow-inner border-x border-t border-earth-200">
                             <div className="h-full border border-earth-200/50 p-4 flex flex-col items-center justify-center text-center italic text-earth-600 text-xs">
-                                現場のリアル、私のこれまでの体験の全ては、<br />
-                                これらは私の視座を形成する重要なピースです。<br />
-                                私の身に起きる全ての経験が、私自身をより豊かに、<br />
-                                楽しく、より大きく成長させてくれると信じています。
+                              私のこれまでの体験の全ては、<br />
+                              私の視座を形成する重要なピースです。<br />
+                              私の身に起きる全ての経験が、<br />
+                              自身をより豊かに、面白く、<br />
+                              より大きく成長させてくれると<br />
+                              信じています。
                             </div>
                          </div>
                       </div>
