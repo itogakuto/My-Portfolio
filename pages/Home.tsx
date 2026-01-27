@@ -63,7 +63,7 @@ export const Home: React.FC = () => {
       }
 
       const { data: topics } = await supabase.from('topics').select('*').order('sort_order', { ascending: true }).limit(3);
-      const { data: news } = await supabase.from('news').select('*').order('created_at', { ascending: false }).limit(3);
+      const { data: news } = await supabase.from('news').select('*').order('created_at', { ascending: false });
       const { data: skillsData } = await supabase.from('skills').select('*').order('sort_order', { ascending: true });
 
       if (topics) setFeaturedTopics(topics);
