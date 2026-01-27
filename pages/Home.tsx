@@ -349,7 +349,7 @@ export const Home: React.FC = () => {
       {/* 4. Projects Section */}
       <section id="projects" className="py-24 bg-earth-50 border-t border-earth-100">
         <div className="max-w-7xl mx-auto px-6">
-            <div className="flex justify-between items-end mb-12">
+            <div className="flex justify-between items-end mb-6">
                 <SectionTitle en="Projects" jp="主な取り組み" />
                 <Link to="/topics" className="hidden md:inline-block text-forest-700 font-bold hover:underline mb-16">
                     全ての実績を見る →
