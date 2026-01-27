@@ -355,7 +355,7 @@ export const Home: React.FC = () => {
                     全ての実績を見る →
                 </Link>
             </div>
-            <div className="mt-10 flex justify-center md:hidden">
+            <div className="mt-10 mb-6 flex justify-end md:hidden">
               <Link to="/topics" className="text-forest-700 font-bold hover:underline">
                 全ての実績を見る →
               </Link>
