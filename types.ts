@@ -49,6 +49,20 @@ export interface Experience {
   created_at: string;
 }
 
+export interface ContactRecipient {
+  id: string;
+  label: string;
+  email: string;
+  is_active: boolean;
+  created_at?: string;
+}
+
+export interface ContactSettings {
+  id: string;
+  template_key: 'main' | 'sub';
+  updated_at?: string;
+}
+
 export interface User {
   id: string;
   email: string;

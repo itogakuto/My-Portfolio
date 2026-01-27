@@ -7,7 +7,8 @@ export const CONFIG = {
   EMAILJS: {
     // EmailJSのサービスID、テンプレートID、パブリックキー
     SERVICE_ID: process.env.EMAILJS_SERVICE_ID || 'service_8a89n8d',
-    TEMPLATE_ID: process.env.EMAILJS_TEMPLATE_ID || 'template_di9knrk',
+    TEMPLATE_MAIN_ID: process.env.EMAILJS_TEMPLATE_MAIN_ID || 'template_di9knrk',
+    TEMPLATE_SUB_ID: process.env.EMAILJS_TEMPLATE_SUB_ID || 'template_dkgv7sd',
     PUBLIC_KEY: process.env.EMAILJS_PUBLIC_KEY || 'zwNSb0fvV4eZyLi8u',
   }
 };

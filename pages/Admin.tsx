@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../services/supabase';
-import { Topic, News, Category, Skill, SkillCategory, Experience } from '../types';
+import { Topic, News, Category, Skill, SkillCategory, Experience, ContactRecipient } from '../types';
 
 export const Admin: React.FC = () => {
   const navigate = useNavigate();
@@ -11,11 +11,15 @@ export const Admin: React.FC = () => {
   const [password, setPassword] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<'topics' | 'news' | 'skills' | 'experiences'>('topics');
+  const [activeTab, setActiveTab] = useState<'topics' | 'news' | 'skills' | 'experiences' | 'settings'>('topics');
   const [topics, setTopics] = useState<Topic[]>([]);
   const [news, setNews] = useState<News[]>([]);
   const [skills, setSkills] = useState<Skill[]>([]);
   const [experiences, setExperiences] = useState<Experience[]>([]);
+  const [contactRecipients, setContactRecipients] = useState<ContactRecipient[]>([]);
+  const [contactTemplateKey, setContactTemplateKey] = useState<'main' | 'sub'>('main');
+  const [contactSaving, setContactSaving] = useState(false);
+  const [contactError, setContactError] = useState<string | null>(null);
   const [loadingData, setLoadingData] = useState(false);
   
   const [isCreating, setIsCreating] = useState(false);
@@ -60,6 +64,29 @@ export const Admin: React.FC = () => {
       
       const { data: expData } = await supabase.from('experiences').select('*').order('sort_order', { ascending: true }).order('created_at', { ascending: false });
       if (expData) setExperiences(expData);
+
+      const { data: contactData, error: contactErr } = await supabase
+        .from('contact_recipients')
+        .select('*')
+        .order('label', { ascending: true });
+      if (contactErr) {
+        setContactError(contactErr.message);
+      } else {
+        setContactError(null);
+      }
+      if (contactData) setContactRecipients(contactData);
+
+      const { data: contactSettings, error: settingsErr } = await supabase
+        .from('contact_settings')
+        .select('template_key')
+        .maybeSingle();
+      if (settingsErr) {
+        setContactError(settingsErr.message);
+      } else if (contactSettings?.template_key === 'sub') {
+        setContactTemplateKey('sub');
+      } else {
+        setContactTemplateKey('main');
+      }
     } catch (err) {
       console.error('Data fetch error:', err);
     } finally {
@@ -201,6 +228,25 @@ export const Admin: React.FC = () => {
     setTopicForm({ ...topicForm, tags });
   };
 
+  const handleSaveContactSettings = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setContactSaving(true);
+    try {
+      const { error: settingsUpsertError } = await supabase
+        .from('contact_settings')
+        .upsert({ id: 'singleton', template_key: contactTemplateKey }, { onConflict: 'id' });
+      if (settingsUpsertError) throw settingsUpsertError;
+
+      await fetchData();
+      alert('テンプレートを更新しました');
+    } catch (error: any) {
+      console.error('Contact recipient update error:', error);
+      alert('更新に失敗しました: ' + (error.message || '不明なエラー'));
+    } finally {
+      setContactSaving(false);
+    }
+  };
+
   if (!session) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-earth-100 px-6">
@@ -237,14 +283,55 @@ export const Admin: React.FC = () => {
 
       <div className="max-w-7xl mx-auto p-6">
         <div className="flex gap-4 mb-6 flex-wrap">
-            {(['topics', 'news', 'skills', 'experiences'] as const).map((tab) => (
+            {(['topics', 'news', 'skills', 'experiences', 'settings'] as const).map((tab) => (
                 <button key={tab} onClick={() => {setActiveTab(tab); resetForms();}} className={`px-6 py-2 rounded font-bold text-sm transition-all ${activeTab === tab ? 'bg-forest-600 text-white shadow-md' : 'bg-earth-200 text-earth-600 hover:bg-earth-300'}`}>
                     {tab.toUpperCase()}
                 </button>
             ))}
         </div>
 
-        {isCreating ? (
+        {activeTab === 'settings' ? (
+            <div className="bg-white p-6 rounded shadow-sm border border-earth-100 animate-fadeIn max-w-2xl">
+                <h2 className="text-xl font-bold mb-6 text-earth-900 serif border-b pb-4">
+                    CONTACT 送信先
+                </h2>
+                {contactError ? (
+                  <div className="p-4 bg-red-50 text-red-700 rounded text-sm">
+                    contact_recipients テーブルの読み込みに失敗しました。{contactError}
+                  </div>
+                ) : (
+                  <form onSubmit={handleSaveContactSettings} className="space-y-4">
+                    <div>
+                      <label className="block text-xs font-bold text-earth-500 mb-1 uppercase">テンプレート選択</label>
+                      <select
+                        className="w-full border p-2 rounded"
+                        value={contactTemplateKey}
+                        onChange={e => setContactTemplateKey(e.target.value as 'main' | 'sub')}
+                      >
+                        <option value="main">Main</option>
+                        <option value="sub">Sub</option>
+                      </select>
+                    </div>
+                    {contactRecipients.length === 0 ? (
+                      <div className="p-4 bg-earth-50 text-earth-600 rounded text-sm">
+                        送信先が未登録です。contact_recipients テーブルにデータを追加してください。
+                      </div>
+                    ) : (
+                      <div className="p-4 bg-earth-50 text-earth-600 rounded text-sm">
+                        現在の送信先: {contactRecipients.find(r => r.is_active)?.label || '未設定'}
+                      </div>
+                    )}
+                    <button
+                      type="submit"
+                      disabled={contactSaving}
+                      className="bg-forest-600 text-white px-6 py-2 rounded font-bold hover:bg-forest-700 disabled:opacity-50"
+                    >
+                      {contactSaving ? '保存中...' : '保存する'}
+                    </button>
+                  </form>
+                )}
+            </div>
+        ) : isCreating ? (
             <div className="bg-white p-6 rounded shadow-sm border border-earth-100 animate-fadeIn">
                 <h2 className="text-xl font-bold mb-6 text-earth-900 serif border-b pb-4">
                     {editId ? 'データを編集' : '新規データ作成'} ({activeTab})

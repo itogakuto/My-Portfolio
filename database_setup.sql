@@ -22,3 +22,43 @@ CREATE POLICY "Allow Authenticated All" ON storage.objects
 FOR ALL TO authenticated 
 USING (bucket_id = 'images') 
 WITH CHECK (bucket_id = 'images');
+
+-- 5. Contact送信先の管理テーブル
+CREATE TABLE IF NOT EXISTS public.contact_recipients (
+    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    label TEXT NOT NULL,
+    email TEXT NOT NULL,
+    is_active BOOLEAN NOT NULL DEFAULT false,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+ALTER TABLE public.contact_recipients ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Allow Public Select Contact Recipients" ON public.contact_recipients;
+CREATE POLICY "Allow Public Select Contact Recipients" ON public.contact_recipients
+FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Allow Authenticated All Contact Recipients" ON public.contact_recipients;
+CREATE POLICY "Allow Authenticated All Contact Recipients" ON public.contact_recipients
+FOR ALL TO authenticated
+USING (true)
+WITH CHECK (true);
+
+-- 6. Contact送信テンプレート設定テーブル
+CREATE TABLE IF NOT EXISTS public.contact_settings (
+    id TEXT PRIMARY KEY DEFAULT 'singleton',
+    template_key TEXT NOT NULL CHECK (template_key IN ('main', 'sub')),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+ALTER TABLE public.contact_settings ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Allow Public Select Contact Settings" ON public.contact_settings;
+CREATE POLICY "Allow Public Select Contact Settings" ON public.contact_settings
+FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Allow Authenticated All Contact Settings" ON public.contact_settings;
+CREATE POLICY "Allow Authenticated All Contact Settings" ON public.contact_settings
+FOR ALL TO authenticated
+USING (true)
+WITH CHECK (true);

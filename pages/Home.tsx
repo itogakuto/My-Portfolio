@@ -15,6 +15,8 @@ export const Home: React.FC = () => {
   const [latestNews, setLatestNews] = useState<News[]>([]);
   const [skills, setSkills] = useState<Skill[]>([]);
   const [activeSkillTab, setActiveSkillTab] = useState<SkillCategory>('Technology');
+  const [contactToEmail, setContactToEmail] = useState<string | null>(null);
+  const [contactTemplateKey, setContactTemplateKey] = useState<'main' | 'sub'>('main');
 
   // インジケーターの動的スタイル管理
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -33,6 +35,7 @@ export const Home: React.FC = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const [sending, setSending] = useState(false);
   const [sentStatus, setSentStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [userEmail, setUserEmail] = useState('');
 
   const skillCategories: SkillCategory[] = ['On-sight', 'Technology', 'Business'];
 
@@ -65,10 +68,22 @@ export const Home: React.FC = () => {
       const { data: topics } = await supabase.from('topics').select('*').order('sort_order', { ascending: true }).limit(3);
       const { data: news } = await supabase.from('news').select('*').order('created_at', { ascending: false });
       const { data: skillsData } = await supabase.from('skills').select('*').order('sort_order', { ascending: true });
+      const { data: activeRecipient } = await supabase
+        .from('contact_recipients')
+        .select('email')
+        .eq('is_active', true)
+        .limit(1)
+        .maybeSingle();
+      const { data: contactSettings } = await supabase
+        .from('contact_settings')
+        .select('template_key')
+        .maybeSingle();
 
       if (topics) setFeaturedTopics(topics);
       if (news) setLatestNews(news);
       if (skillsData) setSkills(skillsData);
+      if (activeRecipient?.email) setContactToEmail(activeRecipient.email);
+      if (contactSettings?.template_key === 'sub') setContactTemplateKey('sub');
     };
 
     fetchData();
@@ -86,7 +101,10 @@ export const Home: React.FC = () => {
     e.preventDefault();
     setSending(true);
     if (formRef.current) {
-      emailjs.sendForm(CONFIG.EMAILJS.SERVICE_ID, CONFIG.EMAILJS.TEMPLATE_ID, formRef.current, CONFIG.EMAILJS.PUBLIC_KEY)
+      const templateId = contactTemplateKey === 'sub'
+        ? CONFIG.EMAILJS.TEMPLATE_SUB_ID
+        : CONFIG.EMAILJS.TEMPLATE_MAIN_ID;
+      emailjs.sendForm(CONFIG.EMAILJS.SERVICE_ID, templateId, formRef.current, CONFIG.EMAILJS.PUBLIC_KEY)
         .then(() => {
           setSentStatus('success');
           setSending(false);
@@ -138,7 +156,7 @@ export const Home: React.FC = () => {
           <div className="max-w-5xl mx-auto px-6 text-center text-white">
             <p className="text-forest-200 font-bold tracking-widest mb-6 uppercase text-sm animate-fadeIn">Field x Technology × Business</p>
             <h1 className="text-4xl md:text-7xl font-semibold serif mb-6 leading-tight text-white drop-shadow-md animate-fadeIn" style={{ animationDelay: '0.2s' }}>
-              世界をより楽しくより大きく
+              現場に最も近い技術者へ
             </h1>
             <p className="text-earth-200 max-w-3xl mx-auto mb-8 leading-relaxed text-lg animate-fadeIn" style={{ animationDelay: '0.4s' }}>
               現場×テクノロジー×ビジネスで課題を解決するエンジニア/コンサルタントを目指して。
@@ -152,9 +170,9 @@ export const Home: React.FC = () => {
         <DeerLineArt className="absolute top-3 right-[10px] w-80 h-80 text-forest-200 pointer-events-none object-contain" opacity={1} />
         <div className="max-w-6xl mx-auto px-6 relative z-10">
             <SectionTitle en="Profile" jp="私について" />
-            <div className="flex flex-col md:flex-row items-start gap-12">
-                <div className="w-full md:w-1/3">
-                    <div className="aspect-[3/4] rounded-lg overflow-hidden shadow-xl bg-earth-200">
+            <div className="flex flex-col md:flex-row items-start md:items-stretch gap-12">
+                <div className="w-full md:w-1/3 md:self-stretch">
+                    <div className="aspect-[3/4] md:aspect-auto md:h-full rounded-lg overflow-hidden shadow-xl bg-earth-200">
                         <img src="/images/profile/profile.png" alt="Ito Gakuto" className="w-full h-full object-cover" />
                     </div>
                 </div>
@@ -214,33 +232,33 @@ export const Home: React.FC = () => {
       {/* NEW: My Feature Section */}
       <section id="features" className="py-24 bg-earth-50 border-t border-earth-100 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <SectionTitle en="My Goals" jp="私の目標" />
+          <SectionTitle en="My Features" jp="私の強み、今後さらに伸ばしていきたいこと" />
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-            {/* Goal 1 */}
+            {/* Feature 1 */}
             <div className="bg-white p-8 rounded-2xl shadow-sm border border-earth-100 hover:shadow-xl transition-all duration-500 group">
-              <h4 className="text-[10px] font-black text-forest-600 uppercase tracking-widest mb-2">Goal 01</h4>
+              <h4 className="text-[10px] font-black text-forest-600 uppercase tracking-widest mb-2">Feature 01</h4>
               <h3 className="text-xl font-bold text-earth-900 mb-4 serif">Field-Oriented<br /><span className="text-sm font-sans font-normal text-earth-500">現場至上主義</span></h3>
               <p className="text-sm text-earth-600 leading-relaxed">
-                机上の空論ではなく、自らフィールドに出ることで、当事者しか気づけない「不都合な真実」や「小さな違和感」を拾い上げ、仮説・検証を繰り返して問題解決を目指します。
+                実際に現場に出て、体験し、現場の声に耳を傾けることが、私の最大の特徴です。現場のリアルなニーズを理解し、その上で最適なソリューションを提供することを目指します。
               </p>
             </div>
 
-            {/* Goal 2 */}
+            {/* Feature 2 */}
             <div className="bg-white p-8 rounded-2xl shadow-sm border border-earth-100 hover:shadow-xl transition-all duration-500 group">
-              <h4 className="text-[10px] font-black text-forest-600 uppercase tracking-widest mb-2">Goal 02</h4>
-              <h3 className="text-xl font-bold text-earth-900 mb-4 serif">Critical Analysis<br /><span className="text-sm font-sans font-normal text-earth-500">批判的分析力</span></h3>
+              <h4 className="text-[10px] font-black text-forest-600 uppercase tracking-widest mb-2">Feature 02</h4>
+              <h3 className="text-xl font-bold text-earth-900 mb-4 serif">Industry Research<br /><span className="text-sm font-sans font-normal text-earth-500">業界リサーチ</span></h3>
               <p className="text-sm text-earth-600 leading-relaxed">
-                現場の「なんとなく大変」という抽象的な課題を、具体的なデータや事象に分析する力。領域を横断して批判的に物事を捉え、当事者ですら気づかない解決策の糸口を見出すことを目指します。
+                マクロ視点で、業界全体を徹底的に把握します。市場動向、競合分析、技術トレンドなどを深く理解し、クライアントにとって最適な戦略を提案できるよう努めます。
               </p>
             </div>
 
-            {/* Goal 3 */}
+            {/* Feature 3 */}
             <div className="bg-white p-8 rounded-2xl shadow-sm border border-earth-100 hover:shadow-xl transition-all duration-500 group">
-              <h4 className="text-[10px] font-black text-forest-600 uppercase tracking-widest mb-2">Goal 03</h4>
-              <h3 className="text-xl font-bold text-earth-900 mb-4 serif">System Design<br /><span className="text-sm font-sans font-normal text-earth-500">持続可能な設計思考</span></h3>
+              <h4 className="text-[10px] font-black text-forest-600 uppercase tracking-widest mb-2">Feature 03</h4>
+              <h3 className="text-xl font-bold text-earth-900 mb-4 serif">accurate & agile<br /><span className="text-sm font-sans font-normal text-earth-500">正確かつ柔軟に</span></h3>
               <p className="text-sm text-earth-600 leading-relaxed">
-                単なる効率化ツールの提供に留まらず、そのソリューションによって生み出される価値を常に意識し、ビジネスモデルと社会調和を見据えた全体設計を重視することを目指します。
+                幾重にもわたる検証とフィードバックを通じて、マクロとミクロの両面から正確なソリューションの提供を目指します。しかし、検証ありきではなく、高いクオリティでアウトプットしていくことに努めます。
               </p>
             </div>
           </div>
@@ -437,6 +455,12 @@ export const Home: React.FC = () => {
                 ) : (
                   <>
                     <form ref={formRef} onSubmit={sendEmail} className="space-y-6">
+                        {contactToEmail && (
+                          <input type="hidden" name="to_email" value={contactToEmail} />
+                        )}
+                        {userEmail && (
+                          <input type="hidden" name="reply_to" value={userEmail} />
+                        )}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div>
                               <label className="block text-[10px] font-black uppercase tracking-widest text-earth-400 mb-2">お名前 <span className="text-forest-600">*</span></label>
@@ -456,6 +480,8 @@ export const Home: React.FC = () => {
                                 required 
                                 className="w-full px-4 py-3.5 rounded-lg border border-earth-100 bg-earth-50/50 focus:bg-white focus:ring-2 focus:ring-forest-500/20 focus:border-forest-500 outline-none transition-all" 
                                 placeholder="example@mail.com"
+                                value={userEmail}
+                                onChange={e => setUserEmail(e.target.value)}
                               />
                           </div>
                         </div>
