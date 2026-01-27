@@ -103,7 +103,7 @@ export const ExperienceList: React.FC = () => {
               Field Records
             </h1>
             <p className="text-[9px] md:text-[10px] uppercase tracking-[0.4em] text-earth-500 mt-2 font-sans font-bold">
-              Fragments / 伊藤 楽大 記録集
+              これまでの経験・体験の記録
             </p>
           </div>
 
@@ -125,14 +125,16 @@ export const ExperienceList: React.FC = () => {
                            <div className="absolute inset-4 border border-forest-700/20"></div>
                            <div className="relative z-10 flex flex-col items-center text-center">
                               <DeerLineArt className="w-24 h-auto mb-8 opacity-40" opacity={1} />
-                              <h2 className="text-4xl font-bold text-earth-100 mb-4 tracking-tighter">野帳</h2>
-                              <p className="text-earth-400 text-xs tracking-[0.5em] uppercase font-sans font-bold">Anthology Vol.01</p>
+                              <h2 className="text-4xl font-bold text-earth-100 mb-4 tracking-tighter">My Experiences</h2>
+                              <p className="text-earth-400 text-xs tracking-[0.5em] uppercase font-sans font-bold">Vol.01</p>
                            </div>
                         </div>
                         <div className="page-back bg-earth-50 rounded-l-xl p-12 shadow-inner border-r border-earth-200">
                            <div className="h-full border border-earth-200/50 p-8 flex flex-col items-center justify-center text-center italic text-earth-600 text-sm leading-relaxed">
-                              現場の空気感、手触り、そして思考の断片。<br />
-                              これらは私の視座を形成する重要なピースです。
+                              現場のリアル、私のこれまでの体験の全ては、<br />
+                              これらは私の視座を形成する重要なピースです。<br />
+                              私の身に起きる全ての経験が、私自身をより豊かに、<br />
+                              楽しく、より大きく成長させてくれると信じています。
                            </div>
                         </div>
                       </div>
@@ -169,7 +171,7 @@ export const ExperienceList: React.FC = () => {
                                       <p className="text-sm text-earth-700 leading-relaxed mb-4">{item2.summary}</p>
                                       {item2.body && <p className="text-sm text-earth-600 leading-relaxed border-t border-earth-100 pt-4 mt-4 italic">{item2.body}</p>}
                                     </div>
-                                    <div className="mt-4 text-left text-[10px] font-mono text-earth-300 italic flex-shrink-0">Page. {i * 2 + 2}</div>
+                                    <div className="mt-4 text-left text-[10px] font-mono text-earth-300 italic flex-shrink-0"># {i * 2 + 2}</div>
                                  </>
                                ) : (
                                  <div className="h-full flex flex-col items-center justify-center opacity-20 italic">
@@ -199,12 +201,15 @@ export const ExperienceList: React.FC = () => {
                       <div className={`page note-page ${currentPage > 0 ? 'flipped' : ''}`} style={{ zIndex: getMobileZIndex(0) }} onClick={() => currentPage === 0 && nextPage()}>
                          <div className="page-front bg-forest-900 border-x-2 border-b-2 border-forest-800 rounded-b-xl shadow-2xl flex flex-col items-center justify-center p-6 text-center">
                             <DeerLineArt className="w-16 h-auto mb-4 opacity-40" opacity={1} />
-                            <h2 className="text-2xl font-bold text-earth-100 mb-2">野帳</h2>
-                            <p className="text-[8px] tracking-[0.4em] uppercase font-sans font-bold text-earth-400">Mobile Journal</p>
+                            <h2 className="text-2xl font-bold text-earth-100 mb-2">My Experiences</h2>
+                            <p className="text-[8px] tracking-[0.4em] uppercase font-sans font-bold text-earth-400">Vol.01</p>
                          </div>
                          <div className="page-back bg-earth-100 rounded-t-xl p-8 shadow-inner border-x border-t border-earth-200">
                             <div className="h-full border border-earth-200/50 p-4 flex flex-col items-center justify-center text-center italic text-earth-600 text-xs">
-                               思考の断片を垂直に辿る。
+                                現場のリアル、私のこれまでの体験の全ては、<br />
+                                これらは私の視座を形成する重要なピースです。<br />
+                                私の身に起きる全ての経験が、私自身をより豊かに、<br />
+                                楽しく、より大きく成長させてくれると信じています。
                             </div>
                          </div>
                       </div>
