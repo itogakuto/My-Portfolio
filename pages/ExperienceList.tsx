@@ -202,7 +202,7 @@ export const ExperienceList: React.FC = () => {
                     <div className="notebook relative w-full h-full transform-style-3d">
                       <div className={`page note-page ${currentPage > 0 ? 'flipped' : ''}`} style={{ zIndex: getMobileZIndex(0) }} onClick={() => currentPage === 0 && nextPage()}>
                          <div className="page-front bg-forest-900 border-x-2 border-b-2 border-forest-800 rounded-b-xl shadow-2xl flex flex-col items-center justify-center p-6 text-center">
-                            <img className="w-20 h-auto mb-6" src="/images/book-image/takibi.png" alt="takibi Line Art" />
+                            <img className="w-60 h-auto mb-6" src="/images/book-image/takibi.png" alt="takibi Line Art" />
                             <h2 className="text-2xl font-bold text-earth-100 mb-2">My Experiences</h2>
                             <p className="text-[8px] tracking-[0.4em] uppercase font-sans font-bold text-earth-400">Vol.01</p>
                          </div>
