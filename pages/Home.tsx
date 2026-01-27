@@ -34,7 +34,7 @@ export const Home: React.FC = () => {
   const [sending, setSending] = useState(false);
   const [sentStatus, setSentStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
-  const skillCategories: SkillCategory[] = ['On-sight', 'Technology', 'Business', 'Other'];
+  const skillCategories: SkillCategory[] = ['On-sight', 'Technology', 'Business'];
 
   // タブの位置と幅を計算する関数
   const updateIndicator = () => {
@@ -108,7 +108,7 @@ export const Home: React.FC = () => {
     'On-sight': {
       title: 'On-sight',
       color: '#34d399',
-      desc: '単なる美しさだけでなく、ユーザー体験（UX）に基づいた設計を心がけています。ユーザーの使う場面、シーンを想像し、その体験がより良くなるように努めています。',
+      desc: '現場で使われるツールやシステム、実際の運用等について実践的に学び、体験することで、現場のニーズに即したソリューションを提供できる力を養っています。',
       levels: ["5 - Super", "4 - Always", "3 - Often", "2 - Sometimes", "1 - Beginner"]
     },
     'Technology': {
@@ -120,12 +120,6 @@ export const Home: React.FC = () => {
     'Business': {
       title: 'Business',
       color: '#349bd3',
-      desc: '単なる美しさだけでなく、ユーザー体験（UX）に基づいた設計を心がけています。ユーザーの使う場面、シーンを想像し、その体験がより良くなるように努めています。',
-      levels: ["5 - Super", "4 - Always", "3 - Often", "2 - Sometimes", "1 - Beginner"]
-    },
-    'Other': {
-      title: 'Other',
-      color: '#fbbf24',
       desc: '現場での体験やヒアリングを通じて課題の本質を捉え、それを解決するためのビジネスモデルや戦略を立案します。地域社会とのコミュニケーションを大切にし、持続可能な産業構造の構築を目指します。',
       levels: ["5 - Super", "4 - Always", "3 - Often", "2 - Sometimes", "1 - Beginner"]
     }
