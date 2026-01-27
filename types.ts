@@ -1,5 +1,5 @@
 export type Category = 'Projects' | 'Works' | 'Others';
-export type SkillCategory = 'Technology' | 'Design' | 'Other';
+export type SkillCategory = 'On-sight' | 'Technology' | 'Business' | 'Other';
 
 export interface Topic {
   id: string;

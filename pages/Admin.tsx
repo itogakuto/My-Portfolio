@@ -291,7 +291,7 @@ export const Admin: React.FC = () => {
                                 <div><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">スキル名</label><input required className="w-full border p-2 rounded" value={skillForm.name || ''} onChange={e=>setSkillForm({...skillForm, name: e.target.value})} /></div>
                                 <div><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">カテゴリ</label>
                                     <select className="w-full border p-2 rounded" value={skillForm.category} onChange={e=>setSkillForm({...skillForm, category: e.target.value as SkillCategory})}>
-                                        <option value="Technology">Technology</option><option value="Design">Design</option><option value="Other">Other</option>
+                                        <option value="On-sight">On-sight</option><option value="Technology">Technology</option><option value="Business">Business</option><option value="Other">Other</option>
                                     </select>
                                 </div>
                                 <div><label className="block text-xs font-bold text-earth-500 mb-1 uppercase">表示順</label><input type="number" className="w-full border p-2 rounded" value={skillForm.sort_order || 0} onChange={e=>setSkillForm({...skillForm, sort_order: parseInt(e.target.value)})} /></div>
