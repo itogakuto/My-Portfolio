@@ -140,6 +140,7 @@ export const ExperienceList: React.FC = () => {
                         <div className="page-back bg-earth-50 rounded-l-xl p-12 shadow-inner border-r border-earth-200">
                            <div className="h-full border border-earth-200/50 p-8 flex flex-col items-center justify-center text-center italic text-earth-600 text-sm leading-relaxed">
                               私のこれまでの体験の全ては、<br />
+                              クライアントに寄り添ったサービスを実装するための<br />
                               私の視座を形成する重要なピースです。<br />
                               私の身に起きる全ての経験が、<br />
                               自身をより豊かに、面白く、<br />
