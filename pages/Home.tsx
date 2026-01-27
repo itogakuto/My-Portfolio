@@ -114,7 +114,7 @@ export const Home: React.FC = () => {
     'Technology': {
       title: 'Technology',
       color: '#f87171',
-      desc: 'フロントエンドからバックエンド、さらにはIoTデバイスの製作まで、現場の課題を解決するための実装力を磨いています。技術面ではAIを積極的に活用し、効率的かつ効果的な開発を目指しています。',
+      desc: 'フロントエンドからバックエンド、さらにはIoTデバイスの製作まで、現場の課題を解決するための実装力を磨いています。技術面では効率的かつ効果的な開発を目指しています。',
       levels: ["5 - Super", "4 - Always", "3 - Often", "2 - Sometimes", "1 - Beginner"]
     },
     'Business': {
