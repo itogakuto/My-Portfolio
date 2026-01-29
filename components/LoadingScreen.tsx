@@ -8,6 +8,7 @@ interface Props {
 export const LoadingScreen: React.FC<Props> = ({ onComplete, isInitial = false }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
+  const [isPreloaded, setIsPreloaded] = useState(false);
 
   const allImages = [
     "/images/loading-images/1.webp",
@@ -19,31 +20,84 @@ export const LoadingScreen: React.FC<Props> = ({ onComplete, isInitial = false }
 
   // 初回は5枚、遷移時は3枚
   const displayImages = isInitial ? allImages : allImages.slice(0, 3);
-  const intervalTime = 400; // 切り替え速度 (ms)
+  const intervalTime = isInitial ? 280 : 220; // 切り替え速度 (ms)
+  const minDurationMs = isInitial ? 600 : 250;
+  const maxDurationMs = isInitial ? 1500 : 650;
 
   useEffect(() => {
-    let timer: number;
-    let count = 0;
+    let isCancelled = false;
+    const preloadImages = async () => {
+      const targets = isInitial ? allImages.slice(0, 4) : allImages.slice(0, 3);
+      await Promise.allSettled(
+        targets.map(
+          (src) =>
+            new Promise<void>((resolve) => {
+              const img = new Image();
+              img.onload = () => resolve();
+              img.onerror = () => resolve();
+              img.src = src;
+            })
+        )
+      );
+      if (!isCancelled) setIsPreloaded(true);
+    };
+    preloadImages();
+    return () => {
+      isCancelled = true;
+    };
+  }, [isInitial]);
 
-    const runSequence = () => {
-      timer = window.setInterval(() => {
-        count++;
-        if (count < displayImages.length) {
-          setCurrentIndex(count);
-        } else {
-          clearInterval(timer);
-          // 最後の画像が表示された後、少し溜めてからフェードアウト
-          setTimeout(() => {
-            setIsVisible(false);
-            setTimeout(onComplete, 800); // フェードアウト完了後に親に通知
-          }, 300);
-        }
-      }, intervalTime);
+  useEffect(() => {
+    let intervalId: number;
+    let minTimerId: number;
+    let maxTimerId: number;
+    let done = false;
+    let minElapsed = false;
+    let pageLoaded = !isInitial;
+
+    const finish = () => {
+      if (done) return;
+      done = true;
+      setIsVisible(false);
+      window.setTimeout(onComplete, 600); // フェードアウト完了後に親に通知
     };
 
-    runSequence();
-    return () => clearInterval(timer);
-  }, [displayImages.length, onComplete]);
+    const tryFinish = () => {
+      if (minElapsed && pageLoaded && isPreloaded) finish();
+    };
+
+    intervalId = window.setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % displayImages.length);
+    }, intervalTime);
+
+    minTimerId = window.setTimeout(() => {
+      minElapsed = true;
+      tryFinish();
+    }, minDurationMs);
+
+    maxTimerId = window.setTimeout(() => {
+      finish();
+    }, maxDurationMs);
+
+    const onLoad = () => {
+      pageLoaded = true;
+      tryFinish();
+    };
+
+    if (isInitial && document.readyState !== 'complete') {
+      window.addEventListener('load', onLoad);
+    } else {
+      pageLoaded = true;
+      tryFinish();
+    }
+
+    return () => {
+      window.removeEventListener('load', onLoad);
+      clearInterval(intervalId);
+      clearTimeout(minTimerId);
+      clearTimeout(maxTimerId);
+    };
+  }, [displayImages.length, intervalTime, isInitial, isPreloaded, maxDurationMs, minDurationMs, onComplete]);
 
   return (
     <div 
