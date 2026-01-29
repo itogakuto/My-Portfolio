@@ -164,7 +164,7 @@ export const ExperienceList: React.FC = () => {
                         <div className="page-front bg-forest-900 border-r-4 border-forest-800 rounded-r-xl shadow-2xl flex flex-col items-center justify-center p-12 overflow-hidden">
                            <div className="absolute inset-4 border border-forest-700/20"></div>
                            <div className="relative z-10 flex flex-col items-center text-center">
-                              <img className="w-60 h-auto mb-6" src="/images/book-image/takibi.png" alt="takibi Line Art" />
+                              <img className="w-60 h-auto mb-6" src="/images/book-image/takibi.webp" alt="takibi Line Art" />
                               <h2 className="text-4xl font-bold text-earth-100 mb-4 tracking-tighter">My Experiences</h2>
                               <p className="text-earth-400 text-xs tracking-[0.5em] uppercase font-sans font-bold">Vol.01</p>
                            </div>

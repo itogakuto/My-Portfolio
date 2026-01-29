@@ -8,7 +8,7 @@ interface Props {
 // 鹿の線画 (画像ファイル読み込み)
 export const DeerLineArt: React.FC<Props> = ({ className = "", opacity = 0.1 }) => (
   <img 
-    src="/images/experiences/deer.png" 
+    src="/images/experiences/deer.webp" 
     alt="Deer Line Art" 
     className={className} 
     style={{ opacity }} 
@@ -18,7 +18,7 @@ export const DeerLineArt: React.FC<Props> = ({ className = "", opacity = 0.1 }) 
 // 猪の線画 (画像ファイル読み込み)
 export const BoarLineArt: React.FC<Props> = ({ className = "", opacity = 0.1 }) => (
   <img 
-    src="/images/experiences/boar.png" 
+    src="/images/experiences/boar.webp" 
     alt="Boar Line Art" 
     className={className} 
     style={{ opacity }} 

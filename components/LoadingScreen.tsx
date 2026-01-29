@@ -10,11 +10,11 @@ export const LoadingScreen: React.FC<Props> = ({ onComplete, isInitial = false }
   const [isVisible, setIsVisible] = useState(true);
 
   const allImages = [
-    "/images/loading-images/1.png",
-    "/images/loading-images/2.png",
-    "/images/loading-images/3.png",
-    "/images/loading-images/4.png",
-    "/images/loading-images/1.png",
+    "/images/loading-images/1.webp",
+    "/images/loading-images/2.webp",
+    "/images/loading-images/3.webp",
+    "/images/loading-images/4.webp",
+    "/images/loading-images/1.webp",
   ];
 
   // 初回は5枚、遷移時は3枚

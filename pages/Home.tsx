@@ -25,12 +25,12 @@ export const Home: React.FC = () => {
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
   
   const [heroImages, setHeroImages] = useState<string[]>([
-    "images/hero-images/1.jpg",
-    "images/hero-images/2.JPG",
-    "images/hero-images/3.PNG",
-    "images/hero-images/4.jpg",
-    "images/hero-images/5.png",
-    "images/hero-images/6.png"
+    "images/hero-images/1.webp",
+    "images/hero-images/2.webp",
+    "images/hero-images/3.webp",
+    "images/hero-images/4.webp",
+    "images/hero-images/5.webp",
+    "images/hero-images/6.webp"
   ]);
   const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
 
@@ -176,7 +176,7 @@ export const Home: React.FC = () => {
             <div className="flex flex-col md:flex-row items-start md:items-stretch gap-12">
                 <div className="w-full md:w-1/3 md:self-stretch">
                     <div className="aspect-[3/4] md:aspect-auto md:h-full rounded-lg overflow-hidden shadow-xl bg-earth-200">
-                        <img src="/images/profile/profile.png" alt="Ito Gakuto" className="w-full h-full object-cover" />
+                        <img src="/images/profile/profile.webp" alt="Ito Gakuto" className="w-full h-full object-cover" />
                     </div>
                 </div>
                 <div className="w-full md:w-2/3">
