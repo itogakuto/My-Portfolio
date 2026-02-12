@@ -156,14 +156,11 @@ export const Home: React.FC = () => {
         </div>
         <div className="relative z-10 w-full bg-black/40 backdrop-blur-sm py-16">
           <div className="max-w-5xl mx-auto px-6 text-center text-white">
-            <p className="text-forest-200 font-bold tracking-widest mb-6 uppercase text-sm animate-fadeIn">Field x Technology × Business</p>
+            <p className="text-forest-200 font-bold tracking-widest mb-6 uppercase text-sm animate-fadeIn">Field x Technology × Design</p>
             <h1 className="text-4xl md:text-7xl font-semibold serif mb-6 leading-tight text-white drop-shadow-md animate-fadeIn" style={{ animationDelay: '0.2s' }}>
-              <span className="block md:inline">現場に最も近い</span>
-              <span className="block md:inline">技術者へ</span>
+              <span className="block md:inline">GakutoIto's</span>
+              <span className="block md:inline">Portfolio</span>
             </h1>
-            <p className="text-earth-200 max-w-3xl mx-auto mb-8 leading-relaxed text-lg animate-fadeIn" style={{ animationDelay: '0.4s' }}>
-              <span className="block md:inline">現場×テクノロジー×ビジネスで課題を</span><span className="block md:inline">解決するエンジニア/コンサルタントを</span><span className="block md:inline">目指して。</span>
-            </p>
           </div>
         </div>
       </section>
@@ -184,7 +181,10 @@ export const Home: React.FC = () => {
                     <p className="text-forest-700 font-bold mb-6 text-lg">静岡県浜松市出身 徳島県在住<br />神山まるごと高等専門学校 デザイン・エンジニアリング学科</p>
                     <div className={`prose prose-earth text-earth-700 leading-loose ${profileExpanded ? '' : 'line-clamp-3 md:line-clamp-none'}`}>
                         <p>
-                          情報工学を専門とし、web開発やアプリ開発を中心に据え、新規事業開発や主催イベントの開催など、幅広く活動を行ってきました。 いずれの活動においても主体性を発揮し、それぞれの理想的な結果の実現に貢献してきました。 また、農業や狩猟などに関する好奇心が強く、多分野を横断した多角的な思考および現場の声に則したソリューションを提案するエンジニア・コンサルタントを目指しています。
+                          現在は情報工学を専門に、デザインやビジネスの知識を交えながら活動をしています。
+                          これまで、プログラミングコンテストでの受賞や、主催イベントの制作により、技術力と企画運営力、空間体験の設計力を培ってきました。
+                          僕は現場で起きる出来事、体験を大切にしており、体験するクライアント、企画運営者、全ての人にとってより良い体験を提供することに非常に強い関心があります。
+                          
                         </p>
                         <p><br />
                           現在はインターンに向けて準備を進めています。
@@ -216,21 +216,22 @@ export const Home: React.FC = () => {
           
           <div className="mt-12">
             <h3 className="text-2xl md:text-4xl font-bold serif text-earth-900 mb-10 leading-relaxed text-center md:text-left">
-              <span className="block md:inline -translate-x-16 md:translate-x-0">あなたの世界を</span>
-              <span className="block md:inline translate-x-6 md:translate-x-0">より楽しくより大きく</span><br /><br />
+              <span className="block md:inline -translate-x-16 md:translate-x-0">リアルを想定した体験設計で</span>
+              <span className="block md:inline translate-x-6 md:translate-x-0">世界をより楽しくより大きく</span><br /><br />
             </h3>
             
             <div className={`prose prose-lg prose-earth text-earth-700 leading-loose space-y-8 max-w-3xl ${purposeExpanded ? '' : 'line-clamp-3 md:line-clamp-none'}`}>
               <p>
-                今ある世界はきっと楽しい。<br />
-                今ある世界はきっと私たちに成長をもたらしてくれる。<br />
-                でも、その世界がもっと楽しくなったら、もっと私たちの成長につながったら、<br />
-                どんなにもワクワクする世界が待っているのだろうか。<br />
+                AIが加速し、テクノロジーが加速する現代。<br />
+                でも、私たちが存在するのは現実の世界だけです。<br />
+                人は呼吸し、歩き、会話し、そうして生活しています。<br />
+                テクノロジーが発達しても、それだけは変わりません。<br />
               </p>
               <p>
-                私は目の前のクライアント、あなたに寄り添い、<br />
-                あなたの世界をより楽しく、より大きくするために、<br />
-                私の持つ力を最大限に活用し、あなたにとってのより良い世界を共に作りたい。<br />
+                だからこそ、私は現実の世界での体験設計を大切にします。<br />
+                私はテクノロジーをバックグラウンドに持ちながら、<br />
+                クライアントの体験設計に重きをおき、<br />
+                プロジェクトに取り組みます。<br />
               </p>
               <p>
                 そのために、テクノロジーやビジネスの力を駆使し、現場の声に寄り添い、<br />
