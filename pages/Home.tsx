@@ -216,7 +216,7 @@ export const Home: React.FC = () => {
           
           <div className="mt-12">
             <h3 className="text-2xl md:text-4xl font-bold serif text-earth-900 mb-10 leading-relaxed text-center md:text-left">
-              <span className="block md:inline -translate-x-16 md:translate-x-0">リアルを想定した体験設計で</span>
+              <span className="block md:inline -translate-x-2 md:translate-x-0">リアルを想定した体験設計で</span>
               <span className="block md:inline translate-x-6 md:translate-x-0">世界をより楽しくより大きく</span><br /><br />
             </h3>
             
