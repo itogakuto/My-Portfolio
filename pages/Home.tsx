@@ -159,7 +159,7 @@ export const Home: React.FC = () => {
             <p className="text-forest-200 font-bold tracking-widest mb-6 uppercase text-sm animate-fadeIn">Field x Technology × Design</p>
             <h1 className="text-4xl md:text-7xl font-semibold serif mb-6 leading-tight text-white drop-shadow-md animate-fadeIn" style={{ animationDelay: '0.2s' }}>
               <span className="block md:inline">GakutoIto's</span>
-              <span className="block md:inline">Portfolio</span>
+              <span className="block md:inline"> Portfolio</span>
             </h1>
           </div>
         </div>
