@@ -129,19 +129,19 @@ export const Home: React.FC = () => {
       title: 'On-sight',
       color: '#34d399',
       desc: '現場で使われるツールやシステム、実際の運用等について実践的に学び、体験することで、現場のニーズに即したソリューションを提供できる力を養っています。',
-      levels: ["5 - Super", "4 - Always", "3 - Often", "2 - Sometimes", "1 - Beginner"]
+      levels: ["5 - 実際の運用を幾度も行っている", "4 - 実際の運用経験がある", "3 - 自立して扱う、行った経験がある", "2 - 大部分において使用可能またはその経験がある", "1 - 特定の場面で使用可能またはその経験がある"]
     },
     'Technology': {
       title: 'Technology',
       color: '#f87171',
       desc: 'フロントエンドからバックエンド、さらにはIoTデバイスの製作まで、現場の課題を解決するための実装力を磨いています。技術面では効率的かつ効果的な開発を目指しています。',
-      levels: ["5 - Super", "4 - Always", "3 - Often", "2 - Sometimes", "1 - Beginner"]
+      levels: ["5 - 実際の運用を幾度も行っている", "4 - デプロイまで行い、実際に運用したことがある", "3 - コンテストや自身のプロジェクトで活用経験がある", "2 - 課内での経験を元に応用的に活用したことがある", "1 - 課内での使用経験がある"]
     },
     'Business': {
       title: 'Business',
       color: '#349bd3',
       desc: '現場での体験やヒアリングを通じて課題の本質を捉え、それを解決するためのビジネスモデルや戦略を立案します。地域社会とのコミュニケーションを大切にし、持続可能な産業構造の構築を目指します。',
-      levels: ["5 - Super", "4 - Always", "3 - Often", "2 - Sometimes", "1 - Beginner"]
+      levels: ["5 - 卓越した能力を持っている", "4 - 複数の業界および自身のプロジェクトでの経験がある", "3 - コンテスト等にも出場し、メンターと共に活動した経験がある", "2 - 課外および自主的にその経験を得ている", "1 - 主に課内でのみその経験がある"]
     }
   };
 
@@ -356,6 +356,29 @@ export const Home: React.FC = () => {
                     </div>
 
                     <div className="space-y-4">
+                      <div className="py-5 px-6 bg-earth-50/50 rounded-2xl border border-earth-100">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                          <div>
+                            <h4 className="text-[9px] md:text-[10px] font-black text-earth-300 uppercase tracking-[0.3em] mb-1">Level Definition</h4>
+                            <p className="text-[10px] text-earth-500">スキルレベルは1〜5の5段階で自己評価しています。</p>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+                          {[...categoryInfo[activeSkillTab].levels].reverse().map((level, i) => {
+                            const [num, label] = level.split(' - ');
+                            return (
+                              <div key={i} className="flex flex-col">
+                                <span className="text-[10px] font-bold text-earth-900 mb-0.5 flex items-center gap-1.5">
+                                  <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: categoryInfo[activeSkillTab].color }}></span>
+                                  Level {num}
+                                </span>
+                                <span className="text-[9px] text-earth-500 font-medium">{label}</span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+
                       <h4 className="text-[9px] md:text-[10px] font-black text-earth-300 uppercase tracking-[0.3em] border-b border-earth-100 pb-2">Skill Inventory</h4>
                       <div className="flex flex-wrap gap-2">
                         {filteredSkills.map(s => (
