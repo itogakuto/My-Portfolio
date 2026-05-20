@@ -4,7 +4,7 @@
 データベース：supabase
 デプロイ：vercel
 
-公開リンク：https://portfolio-dev2-psi.vercel.app
+公開リンク：https://www.itogakuto.com
 
 #for local
 1. Install dependencies:
